@@ -33,7 +33,7 @@ class UserResponseCollectorTerminateQueryingThreadError(UserResponseCollectorErr
 # UserResponseCollector.query_user() would: (1) call method of BlackJackUserQuery instance to get prompt string;
 # (2) Use the prompt string to obtain a raw response from the user;
 # (3) Call method of BlackJackUserQuery instance to validate the raw response (sharing error message with user and repeating (2) as needed;
-# (4) Call method of BlackJackUserQuery instance to convert raw response to processed respoinse;
+# (4) Call method of BlackJackUserQuery instance to convert raw response to processed response;
 # (5) Return processed respones to caller.
 # Note: (3) and (4) might happen in reverse or simultaneously.
 

@@ -27,8 +27,23 @@
     <Compile Include="main.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="test_ConsoleUserQueryReceiver.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="test_UserResponseCollector.py" />
+    <Compile Include="UserQueryCommand.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UserQueryReceiver.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="UserResponseCollector.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Documentation\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Documentation\Developer_Documentation.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in

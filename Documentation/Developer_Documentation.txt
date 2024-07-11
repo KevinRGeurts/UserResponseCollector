@@ -1,0 +1,18 @@
+This file contains developer documentation for the UserResponseCollector. This project origniated within the BlackJackSim project.
+Here it is being separated as its own project and significantly refactored. The intent is to refactor it using the Command design
+pattern, to eliminate the enumeration of query types, and to enable extensibility for individual applications by creating new
+child command classes.
+
+Following terminology in the Command section of the Gang of Four design patterns book:
+1. UserQueryReceiver (abstract base class) = The object that knows how to perform the operations associated with carrying out a request.
+	a. A Child version (UserQueryConsoleReceiver) will be a class that knows how to use python input and print statements to interact with the user
+		in a command prompt window.
+	b. Another child version (UserQueryTkinterReceiver) will know how to interact with the user of a tkinter based GUI application.
+	c. Question: Should we have an abstract Receiver base class and then two child class implementations, one for command window, one for tkinter?
+2. Invoker = The oject that asks the Command to carry out the request.
+	a. Think that this will be the Client. The Client will instantiate a Command object, assign it the correct Receiver, and call its Execute method.
+3. Client = Create a ConcreteCommand object and set its Receiver.
+	a. This will be for example the black jack or cribbage simulator.
+4 UserQueryCommand = Abstract base class that delcares an interface for exeuting an operation.
+5. UserQuerryCommandX = Implements the Command interface, by invoking methods in its Receiver
+	a. X = Menu, Number (really an integer), Cards (for BlackJackSim), PathSave, PathOpen, MusicalPitch (for GuitarTab)...
