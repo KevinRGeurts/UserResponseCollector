@@ -5,6 +5,7 @@ import io
 
 # Local
 from UserQueryCommand import UserQueryCommandMenu, UserQueryCommandNumberInteger, UserQueryCommandPathSave
+import UserQueryReceiver
 
 class Test_UserQueryCommand(unittest.TestCase):
     
@@ -13,8 +14,7 @@ class Test_UserQueryCommand(unittest.TestCase):
     @patch('sys.stdin', io.StringIO('0\n1\n'))
     def test_menu_command(self):
         
-        # TODO: receiver = ConsoleUserQueryReceiver() ??
-        receiver = None
+        receiver = UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
         query_preface = 'Do you want option 1 or option 2?'
         query_dic = {'1':'Option 1', '2':'Option 2'}
         command = UserQueryCommandMenu(receiver, query_preface, query_dic)
@@ -28,8 +28,7 @@ class Test_UserQueryCommand(unittest.TestCase):
     @patch('sys.stdin', io.StringIO('a\n10\n'))
     def test_NumberInteger_command(self):
  
-        # TODO: receiver = ConsoleUserQueryReceiver() ??
-        receiver = None        
+        receiver = UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
         query_preface = 'How many widgets do you want?'
         command = UserQueryCommandNumberInteger(receiver, query_preface)
         
@@ -42,8 +41,7 @@ class Test_UserQueryCommand(unittest.TestCase):
     @patch('sys.stdin', io.StringIO('C:\\Users\\krgeu\\Documents\\Cribbage_Output\\path_query_text.txt\n'))
     def test_PathSave_command(self):
         
-        # TODO: receiver = ConsoleUserQueryReceiver() ??
-        receiver = None
+        receiver = UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
         query_preface = 'Enter a valid file system path.'
         command = UserQueryCommandPathSave(receiver, query_preface)
         
@@ -57,8 +55,7 @@ class Test_UserQueryCommand(unittest.TestCase):
     @patch('sys.stdin', io.StringIO('C:\\Users\\krgeu\\Documents\\Cribbage_Output\\path_query_text.txt\n'))
     def test_PathOpen_command(self):
         
-        # TODO: receiver = ConsoleUserQueryReceiver() ??
-        receiver = None
+        receiver = UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
         query_preface = 'Enter a valid file system path.'
         command = UserQueryCommandPathSave(receiver, query_preface)
         

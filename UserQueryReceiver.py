@@ -16,6 +16,13 @@ class UserQueryReceiver(object):
         Just print a message, temporarily, to see if this works as expected and only ever gets instaniated once.
         """
         print('Instaniating: ', type(self))
+            
+    def GetCommandReceiver(self):
+        """
+        This is a concreate method, intended to be used as the target of a prebound method. It returns self.
+        :return: self, UserQueryReceiver object       
+        """
+        return self
     
     def GetRawResponse(self, prompt_text=''):
         """
@@ -39,7 +46,7 @@ class UserQueryReceiver(object):
         return None
     
     
-class ConsoleUserQueryReceiver():
+class ConsoleUserQueryReceiver(UserQueryReceiver):
     """
     Following the Command design patUserQueryReceivertern, this is a concrete implementation of a UserQueryReceiver, that a concrete UserQueryCommand object
     can use to obtain raw responses from the user through a console window.
@@ -61,19 +68,20 @@ class ConsoleUserQueryReceiver():
     
     def IssueErrorMessage(self, msg=''):
         """
-        This is an abstract method that MUST be implemented by children. If called, it will raise NotImplementedError
         Called to inform the user that their raw response does not meet requirements.
         :parameter msg: Error message to be shown to the user, string
         :return: None       
         """
-        # Let the user know that their was a problem with their response, by printing an error message to the console window
+        # Let the user know that there was a problem with their response, by printing an error message to the console window
         print(msg)
         return None
+
 
 # Here is the global (intended to be private), single instance
 _instance = ConsoleUserQueryReceiver()
 
 # Here are the global prebound method(s)
+UserQueryReceiver_GetCommandReceiver = _instance.GetCommandReceiver
 UserQueryReceiver_GetRawResponse = _instance.GetRawResponse
 UserQueryReceiver_IssueErrorMessage = _instance.IssueErrorMessage
 

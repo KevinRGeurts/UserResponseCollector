@@ -1,4 +1,5 @@
 # Standard
+from cmd import PROMPT
 from pathlib import Path
 
 # Local
@@ -71,9 +72,9 @@ class UserQueryCommandMenu(UserQueryCommand):
         while processed_response is None:
                 
             # Ask the receiver/user for a raw response, which will be in the form of a string
-            # TODO: Like This: raw_response = self._receiver.
+            raw_response = self._receiver.GetRawResponse(prompt_text)
             # For now, use the prebound object pattern
-            raw_response = UserQueryReceiver.UserQueryReceiver_GetRawResponse(prompt_text)
+            # raw_response = UserQueryReceiver.UserQueryReceiver_GetRawResponse(prompt_text)
         
             # Process the raw response from the receiver/user into a proper return value for this query type
             if raw_response in self._query_dic:
@@ -82,9 +83,7 @@ class UserQueryCommandMenu(UserQueryCommand):
             else:
                 # Let the receiver/user know they provided an invalid response
                 msg = '\n' + '\'' + raw_response + '\'' + ' is not a valid response. Please try again.' 
-                # TODO: Like This: self._receiver.
-                # For now, use the prebound object pattern
-                UserQueryReceiver.UserQueryReceiver_IssueErrorMessage(msg)
+                self._receiver.IssueErrorMessage(msg)
  
         return processed_response
 
@@ -118,9 +117,7 @@ class UserQueryCommandNumberInteger(UserQueryCommand):
         while processed_response is None:
                 
             # Ask the receiver/user for a raw response, which will be in the form of a string
-            # TODO: Like This: raw_response = self._receiver.
-            # For now, use the prebound object pattern
-            raw_response = UserQueryReceiver.UserQueryReceiver_GetRawResponse(prompt_text)
+            raw_response = self._receiver.GetRawResponse(prompt_text)
         
             # Process the response from the receiver/user into an integer
             try: 
@@ -128,9 +125,7 @@ class UserQueryCommandNumberInteger(UserQueryCommand):
             except:
                 # Let the receiver/user know they provided an invalid response
                 msg = '\n' + '\'' + raw_response + '\'' + ' is not a number. Please try again.'
-                # TODO: Like This: self._receiver.
-                # For now, use the prebound object pattern
-                UserQueryReceiver.UserQueryReceiver_IssueErrorMessage(msg)
+                self._receiver.IssueErrorMessage(msg)
                 
         return processed_response
     
@@ -165,9 +160,7 @@ class UserQueryCommandPathSave(UserQueryCommand):
         while processed_response is None:
                 
             # Ask the reciever/user for a response, which will be in the form of a string
-            # TODO: Like This: raw_response = self._receiver.
-            # For now, use the prebound object pattern
-            raw_response = UserQueryReceiver.UserQueryReceiver_GetRawResponse(prompt_text)
+            raw_response = self._receiver.GetRawResponse(prompt_text)
         
             # Test that the receiver/user has provided a valid path
             # TODO: If the receiver/user has provided the path to an existing file, confirm that they wish to overwrite it.
@@ -176,9 +169,7 @@ class UserQueryCommandPathSave(UserQueryCommand):
             except OSError:
                 # Let the receiver/user know they provided an invalid response
                 msg = '\n' + '\'' + raw_response + '\'' + ' is not a valid file path. Please try again.' 
-                # TODO: Like This: self._receiver.
-                # For now, use the prebound object pattern
-                UserQueryReceiver.UserQueryReceiver_IssueErrorMessage(msg)
+                self._receiver.IssueErrorMessage(msg)
         
         return processed_response
 
@@ -213,9 +204,7 @@ class UserQueryCommandPathOpen(UserQueryCommand):
         while processed_response is None:
                 
             # Ask the reciever/user for a response, which will be in the form of a string
-            # TODO: Like This: raw_response = self._receiver.
-            # For now, use the prebound object pattern
-            raw_response = UserQueryReceiver.UserQueryReceiver_GetRawResponse(prompt_text)
+            raw_response = self._receiver.GetRawResponse(prompt_text)
         
             # Test that the receiver/user has provided a valid path
             try:
@@ -223,8 +212,6 @@ class UserQueryCommandPathOpen(UserQueryCommand):
             except OSError:
                 # Let the receiver/user know they provided an invalid response
                 msg = '\n' + '\'' + raw_response + '\'' + ' is not a valid file path. Please try again.' 
-                # TODO: Like This: self._receiver.
-                # For now, use the prebound object pattern
-                UserQueryReceiver.UserQueryReceiver_IssueErrorMessage(msg)
+                self._receiver.IssueErrorMessage(msg)
         
         return processed_response
