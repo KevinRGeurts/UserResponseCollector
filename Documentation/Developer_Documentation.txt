@@ -16,3 +16,16 @@ Following terminology in the Command section of the Gang of Four design patterns
 4 UserQueryCommand = Abstract base class that delcares an interface for exeuting an operation.
 5. UserQuerryCommandX = Implements the Command interface, by invoking methods in its Receiver
 	a. X = Menu, Number (really an integer), Cards (for BlackJackSim), PathSave, PathOpen, MusicalPitch (for GuitarTab)...
+
+Current issues:
+1. UserQueryReceiver is implemented using Global Object Pattern and Prebound Method Pattern, which is not really compatible with the UserQueryCommand
+	having a receiver. Coding around this for now, but need to decide how to handle this. While retaining the ability for simulator code not to care
+	if the receiver is a console or a tkinter app. Can I pass the global object in as the receiver? Can I pass the two prebound methods in to the command
+	as callables rather than passing in the receiver (not very OO)? Do I need a factory to create commands with the right type of receiver?
+		a. Possible Soloution 1: How about have a prebound method that takes a UserQueryCommand object as an argument and assigns it the correct 
+			receiver? In other words, the Client would set the receiver of the command object by passing the command object to the prebound method.
+			Currently the command's __init__ takes the receiver object as an argument, so maybe have a prebound method that returns the receiver,
+			so that the return value of the prebound method can be included in the argument list when the command object is constructed. This soluiton
+			would retain the prebound method pattern as the way to "swap" from console to tkinterapp for the receiver, without simulator code having
+			to change.
+2. Not quite sure how PathSave and PathOpen commands are going to generalize between console (enter a string) and tkinter app using file dialogs.

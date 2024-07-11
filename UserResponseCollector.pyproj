@@ -30,6 +30,9 @@
     <Compile Include="test_ConsoleUserQueryReceiver.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="test_UserQueryCommand.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="test_UserResponseCollector.py" />
     <Compile Include="UserQueryCommand.py">
       <SubType>Code</SubType>
