@@ -8,6 +8,11 @@ from UserQueryCommand import UserQueryCommandMenu, UserQueryCommandNumberInteger
 import UserQueryReceiver
 
 class Test_UserQueryCommand(unittest.TestCase):
+
+    def test_bad_receiver_type(self):
+        
+        bad_receiver = '' # Note that it is a string, not a UserQueryReceiver
+        self.assertRaises(AssertionError, UserQueryCommandMenu, bad_receiver, '', {})
     
     # Apply a patch() decorator to replace keyboard input from user with a string.
     # The patch should result in first an invalid response, and then a valid response.

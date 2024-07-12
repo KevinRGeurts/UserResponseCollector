@@ -15,7 +15,8 @@ Following terminology in the Command section of the Gang of Four design patterns
 	a. This will be for example the black jack or cribbage simulator.
 4 UserQueryCommand = Abstract base class that delcares an interface for exeuting an operation.
 5. UserQuerryCommandX = Implements the Command interface, by invoking methods in its Receiver
-	a. X = Menu, Number (really an integer), Cards (for BlackJackSim), PathSave, PathOpen, MusicalPitch (for GuitarTab)...
+	a. X = Menu, NumberInteger (really an integer), Cards (define/implement within BlackJackSim), PathSave, PathOpen,
+		MusicalPitch (define/implement within GuitarTab)...
 
 Current issues:
 1. UserQueryReceiver is implemented using Global Object Pattern and Prebound Method Pattern, which is not really compatible with the UserQueryCommand
@@ -28,4 +29,7 @@ Current issues:
 			so that the return value of the prebound method can be included in the argument list when the command object is constructed. This soluiton
 			would retain the prebound method pattern as the way to "swap" from console to tkinterapp for the receiver, without simulator code having
 			to change.
+	NOTE: This issue was resolved by providing a method of UserQueryReceiver that returns self, and then providing a prebound method to this method.
+	When a Client constructs a Command object, it calls the prebound method to get the global object UserQueryReceiver and passes it in the Command's
+	constructor (__init__()).
 2. Not quite sure how PathSave and PathOpen commands are going to generalize between console (enter a string) and tkinter app using file dialogs.

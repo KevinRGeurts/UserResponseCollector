@@ -15,7 +15,7 @@ class UserQueryReceiver(object):
         """
         Just print a message, temporarily, to see if this works as expected and only ever gets instaniated once.
         """
-        print('Instaniating: ', type(self))
+        print(f"Instaniating: {type(self)}, ID: {id(self)}")
             
     def GetCommandReceiver(self):
         """
@@ -82,6 +82,6 @@ _instance = ConsoleUserQueryReceiver()
 
 # Here are the global prebound method(s)
 UserQueryReceiver_GetCommandReceiver = _instance.GetCommandReceiver
-UserQueryReceiver_GetRawResponse = _instance.GetRawResponse
-UserQueryReceiver_IssueErrorMessage = _instance.IssueErrorMessage
+# UserQueryReceiver_GetRawResponse = _instance.GetRawResponse
+# UserQueryReceiver_IssueErrorMessage = _instance.IssueErrorMessage
 

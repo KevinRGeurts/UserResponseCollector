@@ -17,7 +17,7 @@ class UserQueryCommand(object):
         """
         :parameter receiver: The object that knows how to perform the operations associated with carrying out a command.
         """
-        # TODO: Assert that receiver is of the expected type, UserQueryReceiver
+        assert(isinstance(receiver, UserQueryReceiver.UserQueryReceiver))
         self._receiver = receiver
     
     def Execute(self):
@@ -28,12 +28,7 @@ class UserQueryCommand(object):
         """
         raise NotImplementedError
         return None
-    
-    # Will probably also need methods for:
-    # Processing and validation of raw response into processed response
-    # Possibly to return the type of the processed response
-    #
-    #
+
  
 class UserQueryCommandMenu(UserQueryCommand):
     """

@@ -1,7 +1,8 @@
 # Standard
 
 # Local
-from UserResponseCollector import UserResponseCollector_query_user, BlackJackQueryType
+from UserQueryCommand import UserQueryCommandMenu
+import UserQueryReceiver
 
 
 def do_X():
@@ -22,9 +23,13 @@ if __name__ == '__main__':
     print('--------------------')
         
     # Build a query for the user to obtain their choice of how to user the workbench
+    receiver = UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
+    print(f"Receiver ID: {id(receiver)}")
     query_preface = 'How do you want to use the workbench?'
     query_dic = {'q':'Quit', 'x':'Do X'}
-    response = UserResponseCollector_query_user(BlackJackQueryType.MENU, query_preface, query_dic)
+    command = UserQueryCommandMenu(receiver, query_preface, query_dic)    
+
+    response = command.Execute() 
     
     while response != 'q':
         
@@ -34,5 +39,5 @@ if __name__ == '__main__':
                 do_X()
         
         print('--------------------')
-        response = UserResponseCollector_query_user(BlackJackQueryType.MENU, query_preface, query_dic)
+        response = command.Execute() 
 
