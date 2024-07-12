@@ -119,7 +119,7 @@ class UserQueryCommandNumberInteger(UserQueryCommand):
                 processed_response = int(raw_response)
             except:
                 # Let the receiver/user know they provided an invalid response
-                msg = '\n' + '\'' + raw_response + '\'' + ' is not a number. Please try again.'
+                msg = '\n' + '\'' + raw_response + '\'' + ' is not an integer. Please try again.'
                 self._receiver.IssueErrorMessage(msg)
                 
         return processed_response
