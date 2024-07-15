@@ -87,17 +87,25 @@ class UserQueryCommandNumberInteger(UserQueryCommand):
     """
     Following the Command design pattern, this is the ConcreateUserQueryCommand class that knows how to exeucte a NumberInteger command.
     """
-    def __init__(self, receiver=None, query_preface = ''):
+    def __init__(self, receiver=None, query_preface = '', minimum=None, maximum=None):
         """
         :parameter receiver: The object that knows how to perform the operations associated with carrying out a command.
         :parameter query_preface: Text displayed to the user to request their response, string
+        :parameter minimum: The minimum valid entered integer response, int
+            If None, then there is no minimum value.
+        :parameter maximum: The maximum valid entered ingeger response, int
+            If None, then there is no maximum value.
         """
         UserQueryCommand.__init__(self, receiver)
         self._query_preface = query_preface
+        self._min_val = minimum
+        self._max_val = maximum
         
     def Execute(self):
         """
-        Execution of NumberInteger command returns the integer value provided by the user.
+        Execution of NumberInteger command returns the integer value provided by the user. User will be prompted with text:
+            {query_preface passed in constructor}
+            Enter a number:
         :return: The integer number entered by the user, int        
         """
 
@@ -117,6 +125,12 @@ class UserQueryCommandNumberInteger(UserQueryCommand):
             # Process the response from the receiver/user into an integer
             try: 
                 processed_response = int(raw_response)
+                # Check if the entered integer is within range.
+                if processed_response < self._min_val or processed_response > self._max_val:
+                     # Let the receiver/user know they provided an invalid response
+                    msg = f"\n\'{raw_response}\' is not in the range [{self._min_val},{self._max_val}]. Please try again.'"
+                    self._receiver.IssueErrorMessage(msg)
+                    processed_response = None # So that we go around the while again
             except:
                 # Let the receiver/user know they provided an invalid response
                 msg = '\n' + '\'' + raw_response + '\'' + ' is not an integer. Please try again.'

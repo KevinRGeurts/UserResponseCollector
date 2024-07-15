@@ -40,6 +40,20 @@ class Test_UserQueryCommand(unittest.TestCase):
         exp_val = 10
         act_val = command.Execute()
         self.assertEqual(exp_val, act_val)
+        
+    # Apply a patch() decorator to replace keyboard input from user with a string.
+    # The patch should result in first an invalid response, then a response less than minimum, then a response greater than
+    # # maximum, and then a valid response.
+    @patch('sys.stdin', io.StringIO('a\n-1\n21\n10\n'))
+    def test_NumberInteger_invalid_OutOfRange_command(self):
+ 
+        receiver = UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
+        query_preface = 'How many widgets do you want?'
+        command = UserQueryCommandNumberInteger(receiver, query_preface, 0, 20)
+        
+        exp_val = 10
+        act_val = command.Execute()
+        self.assertEqual(exp_val, act_val)
     
     # TODO: Fix (generalize) the test path, which is a complete hack at this point
     # Apply a patch() decorator to replace keyboard input from user with a string.
