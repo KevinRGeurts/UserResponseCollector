@@ -125,12 +125,20 @@ class UserQueryCommandNumberInteger(UserQueryCommand):
             # Process the response from the receiver/user into an integer
             try: 
                 processed_response = int(raw_response)
-                # Check if the entered integer is within range.
-                if processed_response < self._min_val or processed_response > self._max_val:
-                     # Let the receiver/user know they provided an invalid response
-                    msg = f"\n\'{raw_response}\' is not in the range [{self._min_val},{self._max_val}]. Please try again.'"
-                    self._receiver.IssueErrorMessage(msg)
-                    processed_response = None # So that we go around the while again
+                # Check if the entered integer is within range, if the user has provided min and max values
+                if self._min_val:
+                    if processed_response < self._min_val:
+                        # Let the receiver/user know they provided an invalid response
+                        msg = f"\n\'{raw_response}\' is less than {self._min_val}. Please try again."
+                        self._receiver.IssueErrorMessage(msg)
+                        processed_response = None # So that we go around the while again
+                        continue
+                if self._max_val:
+                    if processed_response > self._max_val:
+                        # Let the receiver/user know they provided an invalid response
+                        msg = f"\n\'{raw_response}\' is greater than {self._max_val}. Please try again."
+                        self._receiver.IssueErrorMessage(msg)
+                        processed_response = None # So that we go around the while again
             except:
                 # Let the receiver/user know they provided an invalid response
                 msg = '\n' + '\'' + raw_response + '\'' + ' is not an integer. Please try again.'

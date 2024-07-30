@@ -1,4 +1,5 @@
 # Standard
+from tkinter.tix import MAX
 import unittest
 from unittest.mock import patch
 import io
@@ -43,13 +44,39 @@ class Test_UserQueryCommand(unittest.TestCase):
         
     # Apply a patch() decorator to replace keyboard input from user with a string.
     # The patch should result in first an invalid response, then a response less than minimum, then a response greater than
-    # # maximum, and then a valid response.
-    @patch('sys.stdin', io.StringIO('a\n-1\n21\n10\n'))
+    # maximum, and then a valid response.
+    @patch('sys.stdin', io.StringIO('a\n0\n21\n10\n'))
     def test_NumberInteger_invalid_OutOfRange_command(self):
  
         receiver = UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
         query_preface = 'How many widgets do you want?'
-        command = UserQueryCommandNumberInteger(receiver, query_preface, 0, 20)
+        command = UserQueryCommandNumberInteger(receiver, query_preface, minimum=1, maximum=20)
+        
+        exp_val = 10
+        act_val = command.Execute()
+        self.assertEqual(exp_val, act_val)
+        
+    # Apply a patch() decorator to replace keyboard input from user with a string.
+    # The patch should result in first an invalid response, then a response less than minimum, and then a valid response.
+    @patch('sys.stdin', io.StringIO('a\n0\n10\n'))
+    def test_NumberInteger_invalid_OutOfRange_noMax_command(self):
+ 
+        receiver = UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
+        query_preface = 'How many widgets do you want?'
+        command = UserQueryCommandNumberInteger(receiver, query_preface, minimum=1)
+        
+        exp_val = 10
+        act_val = command.Execute()
+        self.assertEqual(exp_val, act_val)
+
+    # Apply a patch() decorator to replace keyboard input from user with a string.
+    # The patch should result in first an invalid response, then a response greater than maximum, and then a valid response.
+    @patch('sys.stdin', io.StringIO('a\n21\n10\n'))
+    def test_NumberInteger_invalid_OutOfRange_noMin_command(self):
+ 
+        receiver = UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
+        query_preface = 'How many widgets do you want?'
+        command = UserQueryCommandNumberInteger(receiver, query_preface, maximum=10)
         
         exp_val = 10
         act_val = command.Execute()
