@@ -2,6 +2,21 @@
 
 # Local
 
+class UserQueryReceiverError(Exception):
+    """
+    Base exception class for all custom exceptions specific to UserQueryReceiver.
+    """
+    pass
+
+class UserQueryReceiverTerminateQueryingThreadError(UserQueryReceiverError):
+    """
+    Custom exception to be raised if the UserQueryReceiver wants the query (command pattern) Client to terminate.
+    Arguments expected in **kwargs:
+        none at this time    
+    """
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args)
+
 
 class UserQueryReceiver(object):
     """
