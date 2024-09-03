@@ -1,12 +1,87 @@
 # Standard
-from tkinter.tix import MAX
 import unittest
 from unittest.mock import patch
 import io
+import tempfile
 
 # Local
 from UserQueryCommand import UserQueryCommandMenu, UserQueryCommandNumberInteger, UserQueryCommandPathOpen, UserQueryCommandPathSave
 import UserQueryReceiver
+
+class Test_UserQueryCommandPathSaveOpen(unittest.TestCase):
+
+    def test_PathSave_command_exists_y(self):
+        
+        # Create a named temporary file.
+        temp_file = tempfile.NamedTemporaryFile()
+        temp_path = temp_file.name
+        print(f"temporary file path is: {temp_path}")
+        # Use that named temporary file to patch sys.stadin
+        patcher = patch('sys.stdin', io.StringIO(temp_path+'\ny\n'))
+        # Start the patch
+        patcher.start()
+        # Make sure the patch gets undone during teardown
+        self.addCleanup(patcher.stop)
+        # Make sure the temporary file gets closed during teardown
+        self.addCleanup(temp_file.close)
+        
+        receiver = UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
+        query_preface = 'Which file do you wish to save?'
+        command = UserQueryCommandPathSave(receiver, query_preface)
+        
+        exp_val = temp_path
+        test_path = command.Execute()
+        act_val = str(test_path)
+        self.assertEqual(exp_val, act_val)
+
+    def test_PathSave_command_exists_n(self):
+
+        # Create a named temporary file.
+        temp_file = tempfile.NamedTemporaryFile()
+        temp_path = temp_file.name
+        print(f"temporary file path is: {temp_path}")
+        # Use that named temporary file to patch sys.stadin
+        patcher = patch('sys.stdin', io.StringIO(temp_path+'\nn\n'))
+        # Start the patch
+        patcher.start()
+        # Make sure the patch gets undone during teardown
+        self.addCleanup(patcher.stop)
+        # Make sure the temporary file gets closed during teardown
+        self.addCleanup(temp_file.close)        
+        
+        receiver = UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
+        query_preface = 'Which file do you wish to save?'
+        command = UserQueryCommandPathSave(receiver, query_preface)
+        
+        exp_val = 'None'
+        test_path = command.Execute()
+        act_val = str(test_path)
+        self.assertEqual(exp_val, act_val)
+
+    def test_PathOpen_command(self):
+
+        # Create a named temporary file.
+        temp_file = tempfile.NamedTemporaryFile()
+        temp_path = temp_file.name
+        print(f"temporary file path is: {temp_path}")
+        # Use that named temporary file to patch sys.stadin
+        patcher = patch('sys.stdin', io.StringIO(temp_path+'\n'))
+        # Start the patch
+        patcher.start()
+        # Make sure the patch gets undone during teardown
+        self.addCleanup(patcher.stop)
+        # Make sure the temporary file gets closed during teardown
+        self.addCleanup(temp_file.close)
+        
+        receiver = UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
+        query_preface = 'Which file would you like to open?'
+        command = UserQueryCommandPathOpen(receiver, query_preface)
+        
+        exp_val = temp_path
+        test_path = command.Execute()
+        act_val = str(test_path)
+        self.assertEqual(exp_val, act_val)
+
 
 class Test_UserQueryCommand(unittest.TestCase):
 
@@ -80,48 +155,6 @@ class Test_UserQueryCommand(unittest.TestCase):
         
         exp_val = 10
         act_val = command.Execute()
-        self.assertEqual(exp_val, act_val)
-    
-    # TODO: Fix (generalize) the test path, which is a complete hack at this point
-    # Apply a patch() decorator to replace keyboard input from user with a string.
-    @patch('sys.stdin', io.StringIO('C:\\Users\\krgeu\\Documents\\Cribbage_Output\\path_query_text.txt\ny\n'))
-    def test_PathSave_command_exists_y(self):
-        
-        receiver = UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
-        query_preface = 'Which file do you wish to save?'
-        command = UserQueryCommandPathSave(receiver, query_preface)
-        
-        exp_val = 'C:\\Users\\krgeu\\Documents\\Cribbage_Output\\path_query_text.txt'
-        test_path = command.Execute()
-        act_val = str(test_path)
-        self.assertEqual(exp_val, act_val)
-
-    # TODO: Fix (generalize) the test path, which is a complete hack at this point
-    # Apply a patch() decorator to replace keyboard input from user with a string.
-    @patch('sys.stdin', io.StringIO('C:\\Users\\krgeu\\Documents\\Cribbage_Output\\path_query_text.txt\nn\n'))
-    def test_PathSave_command_exists_n(self):
-        
-        receiver = UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
-        query_preface = 'Which file do you wish to save?'
-        command = UserQueryCommandPathSave(receiver, query_preface)
-        
-        exp_val = 'None'
-        test_path = command.Execute()
-        act_val = str(test_path)
-        self.assertEqual(exp_val, act_val)
-        
-    # TODO: Fix (generalize) the test path, which is a complete hack at this point
-    # Apply a patch() decorator to replace keyboard input from user with a string.
-    @patch('sys.stdin', io.StringIO('C:\\Users\\krgeu\\Documents\\Cribbage_Output\\path_query_text.txt\n'))
-    def test_PathOpen_command(self):
-        
-        receiver = UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
-        query_preface = 'Which file would you like to open?'
-        command = UserQueryCommandPathOpen(receiver, query_preface)
-        
-        exp_val = 'C:\\Users\\krgeu\\Documents\\Cribbage_Output\\path_query_text.txt'
-        test_path = command.Execute()
-        act_val = str(test_path)
         self.assertEqual(exp_val, act_val)
         
 
