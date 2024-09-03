@@ -5,7 +5,7 @@ from unittest.mock import patch
 import io
 
 # Local
-from UserQueryCommand import UserQueryCommandMenu, UserQueryCommandNumberInteger, UserQueryCommandPathSave
+from UserQueryCommand import UserQueryCommandMenu, UserQueryCommandNumberInteger, UserQueryCommandPathOpen, UserQueryCommandPathSave
 import UserQueryReceiver
 
 class Test_UserQueryCommand(unittest.TestCase):
@@ -84,14 +84,28 @@ class Test_UserQueryCommand(unittest.TestCase):
     
     # TODO: Fix (generalize) the test path, which is a complete hack at this point
     # Apply a patch() decorator to replace keyboard input from user with a string.
-    @patch('sys.stdin', io.StringIO('C:\\Users\\krgeu\\Documents\\Cribbage_Output\\path_query_text.txt\n'))
-    def test_PathSave_command(self):
+    @patch('sys.stdin', io.StringIO('C:\\Users\\krgeu\\Documents\\Cribbage_Output\\path_query_text.txt\ny\n'))
+    def test_PathSave_command_exists_y(self):
         
         receiver = UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
-        query_preface = 'Enter a valid file system path.'
+        query_preface = 'Which file do you wish to save?'
         command = UserQueryCommandPathSave(receiver, query_preface)
         
         exp_val = 'C:\\Users\\krgeu\\Documents\\Cribbage_Output\\path_query_text.txt'
+        test_path = command.Execute()
+        act_val = str(test_path)
+        self.assertEqual(exp_val, act_val)
+
+    # TODO: Fix (generalize) the test path, which is a complete hack at this point
+    # Apply a patch() decorator to replace keyboard input from user with a string.
+    @patch('sys.stdin', io.StringIO('C:\\Users\\krgeu\\Documents\\Cribbage_Output\\path_query_text.txt\nn\n'))
+    def test_PathSave_command_exists_n(self):
+        
+        receiver = UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
+        query_preface = 'Which file do you wish to save?'
+        command = UserQueryCommandPathSave(receiver, query_preface)
+        
+        exp_val = 'None'
         test_path = command.Execute()
         act_val = str(test_path)
         self.assertEqual(exp_val, act_val)
@@ -102,8 +116,8 @@ class Test_UserQueryCommand(unittest.TestCase):
     def test_PathOpen_command(self):
         
         receiver = UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
-        query_preface = 'Enter a valid file system path.'
-        command = UserQueryCommandPathSave(receiver, query_preface)
+        query_preface = 'Which file would you like to open?'
+        command = UserQueryCommandPathOpen(receiver, query_preface)
         
         exp_val = 'C:\\Users\\krgeu\\Documents\\Cribbage_Output\\path_query_text.txt'
         test_path = command.Execute()

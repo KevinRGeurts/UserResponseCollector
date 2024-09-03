@@ -179,10 +179,19 @@ class UserQueryCommandPathSave(UserQueryCommand):
             # Ask the reciever/user for a response, which will be in the form of a string
             raw_response = self._receiver.GetRawResponse(prompt_text)
         
-            # Test that the receiver/user has provided a valid path
-            # TODO: If the receiver/user has provided the path to an existing file, confirm that they wish to overwrite it.
+            # Test that the receiver/user has provided a valid path using try/except
             try:
                 processed_response = Path(raw_response)
+                # Check if the receiver / user has provided the path to an existing file. If so, confirm that the wish to overwrite it.
+                if processed_response.exists():
+                    query_preface = '\n' + '\'' + raw_response + '\'' + ' is an existing file. Do you want to overwrite it?'
+                    query_dic = {'y':'Yes', 'n':'No'}
+                    command = UserQueryCommandMenu(self._receiver, query_preface, query_dic)
+                    overwrite_response = command.Execute()
+                    match overwrite_response:
+                        case 'n':
+                            processed_response = None
+                            break
             except OSError:
                 # Let the receiver/user know they provided an invalid response
                 msg = '\n' + '\'' + raw_response + '\'' + ' is not a valid file path. Please try again.' 

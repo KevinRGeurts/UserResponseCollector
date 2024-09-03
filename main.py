@@ -1,14 +1,21 @@
 # Standard
 
 # Local
-from UserQueryCommand import UserQueryCommandMenu
+from UserQueryCommand import UserQueryCommandMenu, UserQueryCommandPathSave
 import UserQueryReceiver
 
 
-def do_X():
+def do_Debug():
     """
-    Use UserResponseCollector to do X.
+    Use UserResponseCollector to debug.
     """
+    receiver = UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
+    query_preface = 'Enter a valid file system path.'
+    command = UserQueryCommandPathSave(receiver, query_preface)
+        
+    exp_val = 'None'
+    test_path = command.Execute()
+    act_val = str(test_path)
 
     return None
 
@@ -26,7 +33,7 @@ if __name__ == '__main__':
     receiver = UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
     print(f"Receiver ID: {id(receiver)}")
     query_preface = 'How do you want to use the workbench?'
-    query_dic = {'q':'Quit', 'x':'Do X'}
+    query_dic = {'q':'Quit', 'd':'Debug'}
     command = UserQueryCommandMenu(receiver, query_preface, query_dic)    
 
     response = command.Execute() 
@@ -35,8 +42,8 @@ if __name__ == '__main__':
         
         match response:
             
-            case 'x':
-                do_X()
+            case 'd':
+                do_Debug()
         
         print('--------------------')
         response = command.Execute() 
