@@ -115,7 +115,7 @@ class UserQueryCommandNumberInteger(UserQueryCommand):
 
         # Add to the prompt, asking the user to enter a number.       
                 
-        prompt_text += 'Enter a number:  '
+        prompt_text += f"Enter an integer number between {self._min_val} and {self._max_val}:  "
         
         while processed_response is None:
                 
