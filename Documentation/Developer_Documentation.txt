@@ -40,3 +40,7 @@ Current issues:
 			text entry? This all does seem like breaking encapsulation, but still thinking through it ... Maybe also define a custom receiver that
 			recognizes the specifically is intended for that command? None of this is a problem for the Console receiver, because it can be relied
 			upon to only return raw text. But Menu command is weird because it returns whatever type the key in the dictionary is.
+
+References:
+    (1) Global Object Pattern: https://python-patterns.guide/python/module-globals/
+    (2) Prebound Method Pattern: https://python-patterns.guide/python/prebound-methods/
