@@ -1,5 +1,4 @@
 # Standard
-from cmd import PROMPT
 from pathlib import Path
 
 # Local
