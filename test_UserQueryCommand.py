@@ -1,3 +1,9 @@
+"""
+This module provides unit tests for:
+    (1) UserQueryReceiver and ConsoleUserQueryReceiver classes,
+    (2) UserQueryCommand and UserQueryCommandX classes
+"""
+
 # Standard
 import unittest
 from unittest.mock import patch

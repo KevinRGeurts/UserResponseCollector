@@ -1,3 +1,24 @@
+"""
+This module provides a simple console application for testing the UserQueryReceiver and UserQueryCommand components.
+The code in this module illustrates how to use these components to interactively query the user for different types of input.
+
+__main__ executes a loop that asks the user to choose different query types to perform,
+demonstrating the functionality of the UserQueryReceiver and various UserQueryCommand implementations.
+
+Exported Classes:
+    None
+
+Exported Exceptions:
+    None
+ 
+Exported Functions:
+    do_MenuQuery -- Use UserQueryReceiver and UserQueryCommandMenu to make a Menu query.
+    do_NumberIntegerQuery -- Use UserQueryReceiver and UserQueryCommandNumberInteger to make a NumberInteger query.
+    do_PathSaveQuery -- Use UserQueryReceiver and UserQueryCommandPathSave to make a PathSave query.
+    do_PathOpenQuery -- Use UserQueryReceiver and UserQueryCommandPathOpen to make a PathOpen query.
+    do_Debug -- Change the code inside this function to facilitate debugging.
+"""
+
 # Standard
 
 # Local

@@ -26,8 +26,8 @@ class UserQueryReceiverError(Exception):
     """
     Base exception class for all custom exceptions specific to UserQueryReceiver.
     """
-
     pass
+
 
 class UserQueryReceiverTerminateQueryingThreadError(UserQueryReceiverError):
     """
@@ -140,6 +140,3 @@ _instance = ConsoleUserQueryReceiver()
 
 # Here are the global prebound method(s)
 UserQueryReceiver_GetCommandReceiver = _instance.GetCommandReceiver
-# UserQueryReceiver_GetRawResponse = _instance.GetRawResponse
-# UserQueryReceiver_IssueErrorMessage = _instance.IssueErrorMessage
-

@@ -8,7 +8,6 @@ Following terminology in the Command section of the Gang of Four design patterns
 	a. A Child version (UserQueryConsoleReceiver) will be a class that knows how to use python input and print statements to interact with the user
 		in a command prompt window.
 	b. Another child version (UserQueryTkinterReceiver) will know how to interact with the user of a tkinter based GUI application.
-	c. Question: Should we have an abstract Receiver base class and then two child class implementations, one for command window, one for tkinter?
 2. Invoker = The oject that asks the Command to carry out the request.
 	a. Think that this will be the Client. The Client will instantiate a Command object, assign it the correct Receiver, and call its Execute method.
 3. Client = Create a ConcreteCommand object and set its Receiver.
@@ -34,11 +33,11 @@ Current issues:
 	constructor (__init__()).
 2. Not quite sure how PathSave and PathOpen commands are going to generalize between console (enter a string) and tkinter app using file dialogs.
 	a. One possible solution is to have the methods supported by UserQueryReceiver also take as argument the type of the UserQueryCommand that
-		is makeing the request of the receiver. This might also enable a tkInterUserConsoleReceiver to decide what widget to user to process a Menu
+		is making the request of the receiver. This might also enable a tkInterUserConsoleReceiver to decide what widget to user to process a Menu
 		request versus a NumberInterger request, etc.
-		1. If an app created a custom command, it's type wouldn't be recogniced and it would neet to be processed by tkInterConsoleReceiver as a
+		1. If an app created a custom command, it's type wouldn't be recognized and it would not to be processed by tkInterConsoleReceiver as a
 			text entry? This all does seem like breaking encapsulation, but still thinking through it ... Maybe also define a custom receiver that
-			recognizes the specifically is intended for that command? None of this is a problem for the Console receiver, because it can be relied
+			recognizes it is intended for that command? None of this is a problem for the Console receiver, because it can be relied
 			upon to only return raw text. But Menu command is weird because it returns whatever type the key in the dictionary is.
 
 References:

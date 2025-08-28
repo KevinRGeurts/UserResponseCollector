@@ -1,3 +1,22 @@
+"""
+Defines the interface and concrete implementations of UserQueryCommands classes that know how to query the
+user for different types of input (e.g., menu choice, integer number, file path) via a UserQueryReceiver concrete
+implementation.
+
+Following the Command design pattern, the Command participant interface is defined, and and multiple ConcreteCommand
+implementations are provided.
+
+Exported Classes:
+    UserQueryCommand -- Interface (abstract base) class for Command.
+    UserQueryCommandX -- Concrete UserQueryCommand that invokes methods on UserQueryReceiver to obtain user input of type X.
+    
+Exported Exceptions:
+    None    
+ 
+Exported Functions:
+    None    
+"""
+
 # Standard
 from pathlib import Path
 
@@ -7,14 +26,14 @@ import UserQueryReceiver
 class UserQueryCommand(object):
     """
     Following the Command design pattern, this is the abstract base or interface class for ConcreateUserQueryCommand classes that know how to execute
-    various user querys by invoking prebound methods on UserQueryReceiver.
+    various user querys by invoking methods on UserQueryReceiver.
+
     Each child must by convention and necessity implement these methods:
-        Execute(...) - Blah, blah
-        Y(...) - Blah, blay
+        Execute(...) - Called to obtain a response from the user, of a type which can differ for each child.
     """
     def __init__(self, receiver=None):
         """
-        :parameter receiver: The object that knows how to perform the operations associated with carrying out a command.
+        :parameter receiver: The object that knows how to perform the operations associated with carrying out a command, must be a UserQueryReceiver instance.
         """
         assert(isinstance(receiver, UserQueryReceiver.UserQueryReceiver))
         self._receiver = receiver
@@ -22,7 +41,7 @@ class UserQueryCommand(object):
     def Execute(self):
         """
         This is an abstract method that MUST be implemented by children. If called, it will raise NotImplementedError
-        Called to obtain a response from the user, of a type which can differ for each child
+        Called to obtain a response from the user, of a type which can differ for each child.
         :return: None        
         """
         raise NotImplementedError
@@ -31,7 +50,11 @@ class UserQueryCommand(object):
  
 class UserQueryCommandMenu(UserQueryCommand):
     """
-    Following the Command design pattern, this is the ConcreateUserQueryCommand class that knows how to exeucte a menu command.
+    Following the Command design pattern, this is the ConcreteUserQueryCommand class that knows how to exeucte a menu command.
+    Query the user via receiver to select from a menu of options.
+
+    Methods:
+        Execute(...) --- Returns the key of the value from the query dictionary that the user selected.
     """
     def __init__(self, receiver=None, query_preface = '', query_dic = {}):
         """
@@ -45,7 +68,10 @@ class UserQueryCommandMenu(UserQueryCommand):
         
     def Execute(self):
         """
-        Execution of Menu command returns the key of the value from query_dic that the user selected.
+        Execution of Menu command returns the key of the value from query_dic that the user selected. User will be prompted with text:
+            {query_preface passed in constructor}
+            Choose (key1)value1, (key2)value2, ... :        
+        
         :return: key from query_dic        
         """
 
@@ -67,8 +93,6 @@ class UserQueryCommandMenu(UserQueryCommand):
                 
             # Ask the receiver/user for a raw response, which will be in the form of a string
             raw_response = self._receiver.GetRawResponse(prompt_text)
-            # For now, use the prebound object pattern
-            # raw_response = UserQueryReceiver.UserQueryReceiver_GetRawResponse(prompt_text)
         
             # Process the raw response from the receiver/user into a proper return value for this query type
             if raw_response in self._query_dic:
@@ -85,6 +109,10 @@ class UserQueryCommandMenu(UserQueryCommand):
 class UserQueryCommandNumberInteger(UserQueryCommand):
     """
     Following the Command design pattern, this is the ConcreateUserQueryCommand class that knows how to exeucte a NumberInteger command.
+    Query the user via receiver to provide an integer number within a specified range.
+
+    Methods:
+        Execute(...) --- Returns the integer value provided by the user.
     """
     def __init__(self, receiver=None, query_preface = '', minimum=None, maximum=None):
         """
@@ -104,7 +132,8 @@ class UserQueryCommandNumberInteger(UserQueryCommand):
         """
         Execution of NumberInteger command returns the integer value provided by the user. User will be prompted with text:
             {query_preface passed in constructor}
-            Enter a number:
+            Enter an integer number between {minimum passed in constructor} and {maximum passed in constructor}:
+        
         :return: The integer number entered by the user, int        
         """
 
@@ -150,6 +179,9 @@ class UserQueryCommandPathSave(UserQueryCommand):
     """
     Following the Command design pattern, this is the ConcreateUserQueryCommand class that knows how to exeucte a PathSave command.
     Query the user via receiver to provide a file path.
+
+    Methods:
+        Execute(...) --- Returns the valid file path provided by the user.
     """
     def __init__(self, receiver=None, query_preface = ''):
         """
@@ -161,7 +193,13 @@ class UserQueryCommandPathSave(UserQueryCommand):
         
     def Execute(self):
         """
-        Execution of PathSave command returns the valid file path provided by the user.
+        Execution of PathSave command returns the valid file path provided by the user. User will be prompted with text:
+            {query_preface passed in constructor}
+            Enter a valid file system path, without file extension, and with escaped backslashes.
+        
+        If the path provided already exists, the user will be asked to confirm they want to overwrite it. If not,
+        then they will be prompted to enter a new path.
+
         :return: Valid file path, as Path object
         """
 
@@ -203,6 +241,9 @@ class UserQueryCommandPathOpen(UserQueryCommand):
     """
     Following the Command design pattern, this is the ConcreateUserQueryCommand class that knows how to exeucte a PathOpen command.
     Query the user via receiver to provide a file path.
+
+    Methods:
+        Execute(...) --- Returns the valid file path provided by the user.
     """
     def __init__(self, receiver=None, query_preface = ''):
         """
@@ -214,7 +255,10 @@ class UserQueryCommandPathOpen(UserQueryCommand):
         
     def Execute(self):
         """
-        Execution of PathSave command returns the valid file path provided by the user.
+        Execution of PathSave command returns the valid file path provided by the user. User will be prompted with text:
+            {query_preface passed in constructor}
+            Enter a valid file system path, without file extension, and with escaped backslashes.
+        
         :return: Valid file path, as Path object
         """
 

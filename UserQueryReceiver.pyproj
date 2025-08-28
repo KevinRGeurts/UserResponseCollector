@@ -5,7 +5,7 @@
     <ProjectGuid>7180d67b-fd26-41d3-b40c-1245f23b4950</ProjectGuid>
     <ProjectHome>
     </ProjectHome>
-    <StartupFile>main.py</StartupFile>
+    <StartupFile>UserQueryCommand.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
