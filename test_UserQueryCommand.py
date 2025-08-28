@@ -1,7 +1,6 @@
 """
 This module provides unit tests for:
-    (1) UserQueryReceiver and ConsoleUserQueryReceiver classes,
-    (2) UserQueryCommand and UserQueryCommandX classes
+    (1) UserQueryCommand and (2) UserQueryCommandX classes
 """
 
 # Standard
