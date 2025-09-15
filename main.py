@@ -14,6 +14,8 @@ Exported Exceptions:
 Exported Functions:
     do_MenuQuery -- Use UserQueryReceiver and UserQueryCommandMenu to make a Menu query.
     do_NumberIntegerQuery -- Use UserQueryReceiver and UserQueryCommandNumberInteger to make a NumberInteger query.
+    do_NumberFloatQuery -- Use UserQueryReceiver and UserQueryCommandNumberFloat to make a NumberFloat query.
+    do_StringQuery -- Use UserQueryReceiver and UserQueryCommandStr to make a Str query.
     do_PathSaveQuery -- Use UserQueryReceiver and UserQueryCommandPathSave to make a PathSave query.
     do_PathOpenQuery -- Use UserQueryReceiver and UserQueryCommandPathOpen to make a PathOpen query.
     do_Debug -- Change the code inside this function to facilitate debugging.
@@ -23,6 +25,7 @@ Exported Functions:
 
 # Local
 from UserQueryCommand import UserQueryCommandMenu, UserQueryCommandPathOpen, UserQueryCommandPathSave, UserQueryCommandNumberInteger
+from UserQueryCommand import UserQueryCommandNumberFloat, UserQueryCommandStr
 import UserQueryReceiver
 
 
@@ -73,6 +76,36 @@ def do_NumberIntegerQuery():
     
     return None
 
+def do_NumberFloatQuery():
+    """
+    Use UserQueryReceiver to make a NumberFloat query.
+    """
+    # Build a query for the user to obtain a floating point number
+    receiver = UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
+    print(f"Receiver ID: {id(receiver)}")
+    query_preface = 'Which floating point number do you want?'
+    command = UserQueryCommandNumberFloat(receiver, query_preface, maximum = 20.75)    
+
+    response = command.Execute()
+
+    print(f"You entered the floating point number {response}.")
+    
+    return None
+
+def do_StringQuery():
+    """
+    Use UserQueryReceiver to make a Str query.
+    """
+    # Build a query for the user to obtain a string
+    receiver = UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
+    print(f"Receiver ID: {id(receiver)}")
+    query_preface = 'Which string do you want?'
+    command = UserQueryCommandStr(receiver, query_preface, max_length = 10)    
+    response = command.Execute()
+    print(f"You entered the string '{response}'.")
+    
+    return None
+
 def do_PathSaveQuery():
     """
     Use UserQueryReceiver to make a PathSave query.
@@ -117,7 +150,7 @@ if __name__ == '__main__':
     receiver = UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
     print(f"Receiver ID: {id(receiver)}")
     query_preface = 'How do you want to use the workbench?'
-    query_dic = {'q':'Quit', 'i':'Integer Query', 'm':'Menu Query', 'o':'File Open', 's':'File Save', 'd':'Debug'}
+    query_dic = {'q':'Quit', 'i':'Integer Query', 'f':'Float Query', 't':'text string', 'm':'Menu Query', 'o':'File Open', 's':'File Save', 'd':'Debug'}
     command = UserQueryCommandMenu(receiver, query_preface, query_dic)    
 
     response = command.Execute() 
@@ -131,6 +164,12 @@ if __name__ == '__main__':
 
             case 'i':
                 do_NumberIntegerQuery()
+
+            case 'f':
+                do_NumberFloatQuery()
+
+            case 't':
+                do_StringQuery()
                 
             case 'm':
                 do_MenuQuery()

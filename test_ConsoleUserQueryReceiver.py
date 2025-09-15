@@ -34,7 +34,7 @@ class Test_ConsoleUserQueryReceiver(unittest.TestCase):
     def test_IssueErrorMessage(self, mock_stdout):
         exp_val = 'Some printed error message\n'
         receiver = UserQueryReceiver_GetCommandReceiver() 
-        act_val = receiver.IssueErrorMessage('Some printed error message')
+        receiver.IssueErrorMessage('Some printed error message')
         self.assertEqual(exp_val, mock_stdout.getvalue())
 
 

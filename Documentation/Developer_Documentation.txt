@@ -43,3 +43,12 @@ Current issues:
 References:
     (1) Global Object Pattern: https://python-patterns.guide/python/module-globals/
     (2) Prebound Method Pattern: https://python-patterns.guide/python/prebound-methods/
+
+Needs - before pushing up to GitHub
+Readme.md: Move to Documentation subfolder {done}. Add content. {done}
+license.txt {done}
+Sort out if UserResponseCollector related files are tracked in git or not. {done}
+	git ls-tree -r master --name-only {to list files that git is currently tracking}
+	Removed UserResponseCollector.py and _test_UserResponseCollector.py from git, with
+	git rm --cached UserResponseCollector.py
+	gir rm --chached _test_UserResponseCollector.py

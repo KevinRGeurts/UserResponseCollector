@@ -1,7 +1,7 @@
 """
 Defines the interface and Console implementation of the Receiver for querying the user for input.
 
-Following the Command design pattern, the Reciver participant interface is defined, and the Console implementation is provided.
+Following the Command design pattern, the Receiver participant interface is defined, and the Console implementation is provided.
 
 Exported Classes:
     UserQueryReceiver -- Interface (abstract base) class for Receiver.
