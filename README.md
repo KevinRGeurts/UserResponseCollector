@@ -76,7 +76,7 @@ string that is shorter than 1 character or longer than 25 characters, they will 
 What is your name?
 Enter a string of text no longer than 15 characters.George Washington
 
-'George Washington' is longer than 15 characgers. Please try again.
+'George Washington' is longer than 15 characters. Please try again.
 What is your name?
 Enter a string of text no longer than 15 characters.G. Washington
 ```
