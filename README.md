@@ -1,6 +1,6 @@
 # UserResponseCollector
 
-Source code: [GitHub]()
+Source code: [GitHub](https://github.com/KevinRGeurts/UserResponseCollector)
 ---
 UserResponseCollector is a Python library that facilitates the collection of user responses from the command line (Console).
 It supports text string input, selection from a list of options, integer input, floating point input, and
