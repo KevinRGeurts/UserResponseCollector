@@ -12,7 +12,7 @@ Exported Exceptions:
     UserQueryReceiverTerminateQueryingThreadError -- Concrete custom exception raised if the UserQueryReceiver wants the querying Client to terminate.
  
 Exported Functions:
-    UserQueryReceiver_GetCommandReceiver -- Global prebound method that returns the global, single instance of a concreate UserQueryReceiver.
+    UserQueryReceiver_GetCommandReceiver -- Global prebound method that returns the global, single instance of a concrete UserQueryReceiver.
     See for reference:
         (1) Global Object Pattern: https://python-patterns.guide/python/module-globals/
         (2) Prebound Method Pattern: https://python-patterns.guide/python/prebound-methods/
@@ -65,7 +65,7 @@ class UserQueryReceiver(object):
             
     def GetCommandReceiver(self):
         """
-        This is a concreate method, intended to be used as the target of a prebound method. It returns self.
+        This is a concrete method, intended to be used as the target of a prebound method. It returns self.
             :return: self, UserQueryReceiver object       
         """
         return self

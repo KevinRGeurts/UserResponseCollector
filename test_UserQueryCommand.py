@@ -10,21 +10,25 @@ import io
 import tempfile
 
 # Local
-from UserQueryCommand import UserQueryCommandMenu, UserQueryCommandNumberInteger, UserQueryCommandPathOpen, UserQueryCommandPathSave
+from UserQueryCommand import UserQueryCommand, UserQueryCommandMenu, UserQueryCommandNumberInteger, UserQueryCommandPathOpen, UserQueryCommandPathSave
 from UserQueryCommand import UserQueryCommandNumberFloat, UserQueryCommandStr
 from UserQueryCommand import askForMenuSelection, askForInt, askForFloat, askForStr, askForPathSave, askForPathOpen
 import UserQueryReceiver
 
+# TODO: Since UserQueryCommand.Execute() has been refactored as a Template Method, it would be an enhancement of
+# testing to create unit tests for the individual primitive operations of the UserQueryCommandX classes, rather than
+# relying on UserQueryCommand.Execute() to reach all branches of the primitive operations.
+
 class Test_UserQueryCommandPathSaveOpen(unittest.TestCase):
 
-    def test_PathSave_command_exists_y(self):
+    def test_PathSave_command_exists_n_y(self):
         
         # Create a named temporary file.
         temp_file = tempfile.NamedTemporaryFile()
         temp_path = temp_file.name
         print(f"temporary file path is: {temp_path}")
-        # Use that named temporary file to patch sys.stadin
-        patcher = patch('sys.stdin', io.StringIO(temp_path+'\ny\n'))
+        # Use that named temporary file to patch sys.stdin
+        patcher = patch('sys.stdin', io.StringIO(temp_path+'\nn\n'+temp_path+'\ny\n'))
         # Start the patch
         patcher.start()
         # Make sure the patch gets undone during teardown
@@ -41,38 +45,14 @@ class Test_UserQueryCommandPathSaveOpen(unittest.TestCase):
         act_val = str(test_path)
         self.assertEqual(exp_val, act_val)
 
-    def test_PathSave_command_exists_n(self):
-
-        # Create a named temporary file.
-        temp_file = tempfile.NamedTemporaryFile()
-        temp_path = temp_file.name
-        print(f"temporary file path is: {temp_path}")
-        # Use that named temporary file to patch sys.stadin
-        patcher = patch('sys.stdin', io.StringIO(temp_path+'\nn\n'))
-        # Start the patch
-        patcher.start()
-        # Make sure the patch gets undone during teardown
-        self.addCleanup(patcher.stop)
-        # Make sure the temporary file gets closed during teardown
-        self.addCleanup(temp_file.close)        
-        
-        receiver = UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
-        query_preface = 'Which file do you wish to save?'
-        command = UserQueryCommandPathSave(receiver, query_preface)
-        
-        exp_val = 'None'
-        test_path = command.Execute()
-        act_val = str(test_path)
-        self.assertEqual(exp_val, act_val)
-
     def test_PathSave_function(self):
 
         # Create a named temporary file.
         temp_file = tempfile.NamedTemporaryFile()
         temp_path = temp_file.name
         print(f"temporary file path is: {temp_path}")
-        # Use that named temporary file to patch sys.stadin
-        patcher = patch('sys.stdin', io.StringIO(temp_path+'\nn\n'))
+        # Use that named temporary file to patch sys.stdin
+        patcher = patch('sys.stdin', io.StringIO(temp_path+'\nn\n'+temp_path+'\ny\n'))
         # Start the patch
         patcher.start()
         # Make sure the patch gets undone during teardown
@@ -82,7 +62,7 @@ class Test_UserQueryCommandPathSaveOpen(unittest.TestCase):
         
         receiver = UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
         query_preface = 'Which file do you wish to save?'
-        exp_val = 'None'
+        exp_val = temp_path
         test_path = askForPathSave(query_preface)
         act_val = str(test_path)
         self.assertEqual(exp_val, act_val)
@@ -93,8 +73,35 @@ class Test_UserQueryCommandPathSaveOpen(unittest.TestCase):
         temp_file = tempfile.NamedTemporaryFile()
         temp_path = temp_file.name
         print(f"temporary file path is: {temp_path}")
-        # Use that named temporary file to patch sys.stadin
+        # Use that named temporary file to patch sys.stdin
         patcher = patch('sys.stdin', io.StringIO(temp_path+'\n'))
+        # Start the patch
+        patcher.start()
+        # Make sure the patch gets undone during teardown
+        self.addCleanup(patcher.stop)
+        # Make sure the temporary file gets closed during teardown
+        self.addCleanup(temp_file.close)
+        
+        receiver = UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
+        query_preface = 'Which file would you like to open?'
+        command = UserQueryCommandPathOpen(receiver, query_preface)
+        
+        exp_val = temp_path
+        test_path = command.Execute()
+        act_val = str(test_path)
+        self.assertEqual(exp_val, act_val)
+
+    def test_PathOpen_command_bad_path(self):
+
+        # Create a named temporary file.
+        temp_file = tempfile.NamedTemporaryFile()
+        temp_path = temp_file.name
+        print(f"temporary file path that exists is: {temp_path}")
+        # Modify the temporary file path by adding an extension. This will now be an invalid path.
+        invalid_path = temp_path + '.txt'
+        print(f"invalid file path that does not exist is: {invalid_path}")
+        # Use that invalid path and the temporary (valid) path to patch sys.stdin
+        patcher = patch('sys.stdin', io.StringIO(invalid_path+'\n'+temp_path+'\n'))
         # Start the patch
         patcher.start()
         # Make sure the patch gets undone during teardown
@@ -117,7 +124,7 @@ class Test_UserQueryCommandPathSaveOpen(unittest.TestCase):
         temp_file = tempfile.NamedTemporaryFile()
         temp_path = temp_file.name
         print(f"temporary file path is: {temp_path}")
-        # Use that named temporary file to patch sys.stadin
+        # Use that named temporary file to patch sys.stdin
         patcher = patch('sys.stdin', io.StringIO(temp_path+'\nn\n'))
         # Start the patch
         patcher.start()
@@ -139,7 +146,15 @@ class Test_UserQueryCommand(unittest.TestCase):
     def test_bad_receiver_type(self):
         
         bad_receiver = '' # Note that it is a string, not a UserQueryReceiver
-        self.assertRaises(AssertionError, UserQueryCommandMenu, bad_receiver, '', {})
+        self.assertRaises(AssertionError, UserQueryCommand, bad_receiver)
+
+    def test_primitive_operations_not_implemented(self):
+        
+        receiver = UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
+        command = UserQueryCommand(receiver,'')
+        self.assertRaises(NotImplementedError, command._doCreatePromptText)
+        self.assertRaises(NotImplementedError, command._doProcessRawResponse)
+        self.assertRaises(NotImplementedError, command._doValidateProcessedResponse)
     
     # Apply a patch() decorator to replace keyboard input from user with a string.
     # The patch should result in first an invalid response, and then a valid response.

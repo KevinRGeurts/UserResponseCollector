@@ -15,8 +15,23 @@ The Command design pattern is followed:
   (e.g., for selecting from a list of options or entering an integer) are provided.
 
 Extensibility is achieved by creating new ConcreteCommand classes that implement the Command interface, if a new
-type of input is needed. If a new source of input is needed, a new Receiver subclass can be created that implements
-the Receiver interface.
+type of input is needed. UserQueryCommand child classes (e.g. UserQueryCommandNumberInteger) must implement:
+- ```_doCreatePromptText()``` - Generates string of text used to prompt user for input
+- ```_doProcessRawResponse(...)``` - Converts the raw response text string of user input to an object of required type
+- ```_doValidateProcessedResponse(...)``` - Tests that the object of required type meets any other requirements, such
+											as that an entered integer is greater than or equal to a minimum value
+
+If a new source of input is needed, a new Receiver subclass can be created that implements the Receiver interface.
+
+## Credit where credit is due
+
+- Command and Template Method (followed by UserQueryCommand.Execute()) patterns follow the concepts, UML diagrams,
+  and examples provided in "Design Patterns: Elements of Reusable Object-Oriented Software," by Eric Gamma, Richard Helm,
+  Ralph Johnson, and John Vlissides, published by Addison-Wesley, 1995.
+- UserQueryReceiver_GetCommandReceiver is a global prebound method that returns the global, single instance of a concrete
+  UserQueryReceiver. The Global Object design pattern and Prebound Method design pattern described by Brandon Rhodes are followed.
+  See for reference: (1) Global Object Pattern: https://python-patterns.guide/python/module-globals/,
+  (2) Prebound Method Pattern: https://python-patterns.guide/python/prebound-methods/
 
 ## Basic usage
 The simplest way to use the library is through the functions it provides for each input type.
