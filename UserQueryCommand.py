@@ -154,14 +154,22 @@ class UserQueryCommandMenu(UserQueryCommand):
         """
         Following the Template Method design pattern, _doProcessRawResponse(...) implements the
         primitive operation to convert the raw text response from the user into a key from self._query_dic.
-        Since the key is always a string, this function essentially does nothing but return raw_response.
+        Since the key is always a string, this function processes the raw text response from the user into a string.
         :parameter raw_response: The text input provide by the user in response to the prompt, string
         :return: Tuple (Raw text response, Error message), as Tuple (string, string)
-            Note: Always returns (raw_response, '') 
+            Note: If conversion isn't possible, then return Tuple should be (None, 'some error message text').
+                  If conversion is possible, then return Tuple should be (string, '')
         """
-        # No processing required. Simply repackage into required return tuple.
-        processed_response = raw_response
+        # Process the response from the receiver/user into a string.
+        # This is unlikely to ever fail, since (nearly?) every type in python at least as a default __str()...
+        # implementation. 
+        processed_response = None
         msg = ''
+        try:
+            processed_response = str(raw_response)
+        except:
+            # Craft error message
+            msg = f"\n\'{raw_response}\' is not a valid response. Please try again." 
         return (processed_response, msg)
 
     def _doValidateProcessedResponse(self, processed_response=None):
@@ -248,7 +256,7 @@ class UserQueryCommandNumberInteger(UserQueryCommand):
             processed_response = int(raw_response)
         except:
             # Craft error message
-            msg = '\n' + '\'' + raw_response + '\'' + ' is not an integer. Please try again.'
+            msg = f"\n\'{raw_response}\' is not an integer. Please try again."
         return (processed_response, msg)
 
     def _doValidateProcessedResponse(self, processed_response=None):
@@ -418,7 +426,7 @@ class UserQueryCommandStr(UserQueryCommand):
         """
         prompt_text = self._query_preface + '\n'
         # Add to the prompt, asking the user to enter a string no longer than a certain number of characters      
-        prompt_text += f"Enter a string of text no longer than {self._max_len} characters."
+        prompt_text += f"Enter a string of text no longer than {self._max_len} characters:  "
         return prompt_text
 
     def _doProcessRawResponse(self, raw_response=''):
@@ -430,7 +438,9 @@ class UserQueryCommandStr(UserQueryCommand):
             Note: If conversion isn't possible, then return Tuple should be (None, 'some error message text').
                   If conversion is possible, then return Tuple should be (string, '')
         """
-        # Process the response from the receiver/user into a string
+        # Process the response from the receiver/user into a string.
+        # This is unlikely to ever fail, since (nearly?) every type in python at least as a default __str()...
+        # implementation. 
         processed_response = None
         msg = ''
         try: 
@@ -502,7 +512,7 @@ class UserQueryCommandPathSave(UserQueryCommand):
         """
         prompt_text = self._query_preface + '\n'
         # Add to the prompt, telling the user how to handle directory separaters     
-        prompt_text += 'Enter a valid file system path, without file extension, and with escaped backslashes.'
+        prompt_text += 'Enter a valid file system path, without file extension, and with escaped backslashes:  '
         return prompt_text
 
     def _doProcessRawResponse(self, raw_response=''):
@@ -594,7 +604,7 @@ class UserQueryCommandPathOpen(UserQueryCommand):
         """
         prompt_text = self._query_preface + '\n'
         # Add to the prompt, telling the user how to handle directory separaters     
-        prompt_text += 'Enter a valid file system path, without file extension, and with escaped backslashes.'
+        prompt_text += 'Enter a valid file system path, without file extension, and with escaped backslashes:  '
         return prompt_text
 
     def _doProcessRawResponse(self, raw_response=''):
