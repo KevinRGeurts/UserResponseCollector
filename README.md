@@ -7,7 +7,7 @@ It supports text string input, selection from a list of options, integer input, 
 input of file paths for opening or saving files.
 
 It is extensible, allowing developers to create custom input types as needed. It can also be extended to obtain input
-from other sources, such as graphical user interface.
+from other sources, such as a graphical user interface.
 
 The Command design pattern is followed:
 - The Receiver participant interface is defined, and the Console implementation is provided.
@@ -24,8 +24,7 @@ type of input is needed. UserQueryCommand child classes (e.g. UserQueryCommandNu
 If a new source of input is needed, a new Receiver subclass can be created that implements the Receiver interface.
 
 ## Credit where credit is due
-
-- Command and Template Method (followed by UserQueryCommand.Execute()) patterns follow the concepts, UML diagrams,
+- Command and Template Method (followed by UserQueryCommand.Execute()) design patterns follow the concepts, UML diagrams,
   and examples provided in "Design Patterns: Elements of Reusable Object-Oriented Software," by Eric Gamma, Richard Helm,
   Ralph Johnson, and John Vlissides, published by Addison-Wesley, 1995.
 - UserQueryReceiver_GetCommandReceiver is a global prebound method that returns the global, single instance of a concrete
