@@ -174,6 +174,11 @@ response = command.Execute()
 print(f"You entered the integer {response}.")
 ```
 
+## Unittests
+
+Unittests for the UserQueryReceiver are in the tests directory, with filenames starting with test_. To run the unittests,
+type ```python -m unittest discover -s ..\..\tests -v``` in a terminal window in the src\UserResponseCollector directory.
+
 ## License
 MIT License. See the LICENSE file for details
 

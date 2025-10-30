@@ -6,15 +6,14 @@
     <ProjectHome>
     </ProjectHome>
     <StartupFile>main.py</StartupFile>
-    <SearchPath>
-    </SearchPath>
+    <SearchPath>..\..\tests</SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
     <Name>UserQueryReceiver</Name>
     <RootNamespace>UserResponseCollector</RootNamespace>
     <TestFramework>unittest</TestFramework>
     <UnitTestPattern>test*.py</UnitTestPattern>
-    <UnitTestRootDirectory>.</UnitTestRootDirectory>
+    <UnitTestRootDirectory>..\..\tests</UnitTestRootDirectory>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -28,26 +27,19 @@
     <Compile Include="main.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="test_ConsoleUserQueryReceiver.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="test_UserQueryCommand.py">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="UserQueryCommand.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="UserQueryReceiver.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="__init__.py" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Documentation\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Documentation\Developer_Documentation.txt" />
-    <Content Include="LICENSE.txt" />
-    <Content Include="README.md" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
