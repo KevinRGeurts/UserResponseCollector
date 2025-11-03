@@ -2,6 +2,10 @@
 requires = ["pdm-backend >= 2.4.0"]
 build-backend = "pdm.backend"
 
+[tool.pdm.build]
+includes = ["src\\UserResponseCollector\\*.py"]
+source-includes = ["tests\\", "src\\UserResponseCollector\\Documentation\\Developer_Documentation.txt", "src\\UserResponseCollector\\UserQueryReceiver.sln", "src\\UserResponseCollector\\UserQueryReceiver.pyproj"]
+
 [project]
 name = "UserResponseCollector"
 version = "1.0.0"
@@ -19,10 +23,10 @@ classifiers = [
   "Intended Audience :: Developers",
   "Topic :: Software Development :: Libraries :: Python Modules",
   "Topic :: Software Development :: User Interfaces",
-  "License :: OSI Approved :: MIT License",  
 ]
 license = "MIT"
 license-files = ["LICEN[CS]E*"]
+keywords = ["query", "console", "input", "response"]
 
 [project.urls]
 Homepage = "https://github.com/KevinRGeurts/UserResponseCollector"
