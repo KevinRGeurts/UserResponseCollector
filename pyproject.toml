@@ -3,8 +3,8 @@ requires = ["pdm-backend >= 2.4.0"]
 build-backend = "pdm.backend"
 
 [tool.pdm.build]
-includes = ["src\\UserResponseCollector\\*.py"]
-source-includes = ["tests\\", "src\\UserResponseCollector\\Documentation\\Developer_Documentation.txt", "src\\UserResponseCollector\\UserQueryReceiver.sln", "src\\UserResponseCollector\\UserQueryReceiver.pyproj"]
+includes = ["src/UserResponseCollector/*.py"]
+source-includes = ["tests/", "src/UserResponseCollector/Documentation/Developer_Documentation.txt", "src/UserResponseCollector/UserQueryReceiver.sln", "src/UserResponseCollector/UserQueryReceiver.pyproj"]
 
 [project]
 name = "UserResponseCollector"
