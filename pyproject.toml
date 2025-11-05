@@ -8,7 +8,7 @@ source-includes = ["tests/", "src/UserResponseCollector/Documentation/Developer_
 
 [project]
 name = "UserResponseCollector"
-version = "1.0.0"
+version = "1.0.1"
 authors = [
   { name="Kevin R. Geurts", email="kevin.r.geurts@gmail.com" },
 ]
