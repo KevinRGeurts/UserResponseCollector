@@ -33,11 +33,14 @@ If a new source of input is needed, a new Receiver subclass can be created that 
   (2) Prebound Method Pattern: https://python-patterns.guide/python/prebound-methods/
 
 ## Basic usage
-The simplest way to use the library is through the functions it provides for each input type.
+The simplest way to use the library is through the functions it provides for each input type. Note that all the usage
+examples below assume that the ```UserResponeCollector``` package has been installed from PyPI, and is available for import.
+If this is not the case, and you are just working with the source code, adjust the import statements by dropping
+the leading 'UserResponseCollector.' from the module paths.
 
 ### Integer input
 ```python
-from UserQueryCommand import askForInt
+from UserResponseCollector.UserQueryCommand import askForInt
 number = askForInt(query_preface='How many widgets will you purchase?', minimum=1, maximum=100)
 ```
 
@@ -58,7 +61,7 @@ The minimum and maximum arguments to the function can be set to None (which are 
 
 ### Floating point input
 ```python
-from UserQueryCommand import askForFloat
+from UserResponseCollector.UserQueryCommand import askForFloat
 price = askForFloat(query_preface='What is the price of the widget in dollars?', minimum=0.25, maximum=100)
 ```
 
@@ -79,7 +82,7 @@ The minimum and maximum arguments to the function can be set to None (which are 
 
 ### Text string input
 ```python
-from UserQueryCommand import askForStr
+from UserResponseCollector.UserQueryCommand import askForStr
 name = askForStr(query_preface='What is your name?', max_length=15)
 ```
 
@@ -99,7 +102,7 @@ The default maximum length is 25 characters. The argument can be set to None if 
 
 ### Menu selection input
 ```python
-from UserQueryCommand import askForMenuSelection
+from UserResponseCollector.UserQueryCommand import askForMenuSelection
 name = askForMenuSelection(query_preface='What option do you want?', query_dic={'a':'Option A', 'b':'Option B'})
 ```
 
@@ -117,7 +120,7 @@ Choose (a)Option A, (b)Option B: a
 
 ### Path for saving file input
 ```python
-from UserQueryCommand import askForPathSave
+from UserResponseCollector.UserQueryCommand import askForPathSave
 name = askForPathSave(query_preface='Where do you wish to save the data?')
 ```
 
@@ -139,7 +142,7 @@ Choose (y)Yes, (n)No:
 
 ### Path for opening file input
 ```python
-from UserQueryCommand import askForPathOpen
+from UserResponseCollector.UserQueryCommand import askForPathOpen
 name = askForPathOpen(query_preface='Which data file do you wish to open?')
 ```
 
@@ -159,13 +162,16 @@ Enter a valid file system path, without file extension, and with escaped backsla
 
 ## Advanced Usage
 It is also possible to use the Receiver and Command objects directly to obtain input, rather than using the functions that wrap these objects.
+Note that the usage example below assumes that the ```UserResponeCollector``` package has been installed from PyPI, and is available for import.
+If this is not the case, and you are just working with the source code, adjust the import statements by dropping
+the leading 'UserResponseCollector.' from the module paths. Make the same adjustment in the ```receiver = ...``` line below.
 
 ### Integer input
 ```python
-from UserQueryCommand input UserQueryCommandNumberInteger
-import UserQueryReceiver
+from UserResponseCollector.UserQueryCommand input UserQueryCommandNumberInteger
+import UserResponseCollector.UserQueryReceiver
 # Build a query for the user to obtain an integer
-receiver = UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
+receiver = UserResponseCollector.UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
 query_preface = 'How many widgets will you purchase?'
 command = UserQueryCommandNumberInteger(receiver, query_preface, minimum = 1, maximum = 100)    
 # Initiate the input request
