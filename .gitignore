@@ -364,3 +364,4 @@ FodyWeavers.xsd
 
 # python package build artifacts/
 dist/
+/src/UserResponseCollector/env
