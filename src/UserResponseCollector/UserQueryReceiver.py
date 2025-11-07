@@ -19,8 +19,14 @@ Exported Functions:
 """
 
 # Standard
+import sys
+import logging
 
 # Local
+
+# TODO: Remove or comment out debug print for release. This was added to help understand
+# and debug package import behavior.
+# print("In module UserQueryReceiver sys.path[0], __package__ ==", sys.path[0], __package__)
 
 class UserQueryReceiverError(Exception):
     """
@@ -57,11 +63,16 @@ class UserQueryReceiver(object):
         IssueErrorMessage(...) -- Inform the user that their raw response does not meet requirements, for example, by printing to a console window.
     """
 
-    def __init__(self):
+    def __init__(self, log_level = logging.INFO):
         """
-        Just print a message, temporarily, to see if this works as expected and only ever gets instaniated once.
+        Set up logging for this class. Log a DEBUG message when instaniated, which should only ever happen once,
+        since this class is intended to only ever gets instaniated once.
+        :param log_level: The logging level to set for the logger, e.g., logging.DEBUG, logging.INFO, etc.
         """
-        print(f"Instaniating: {type(self)}, ID: {id(self)}")
+        self._setup_logging(log_level)
+        # Get the logger 'user_query_receiver_logger'
+        logger = logging.getLogger('user_query_receiver_logger')
+        logger.debug(f"Instaniating: {type(self)}, ID: {id(self)}")
             
     def GetCommandReceiver(self):
         """
@@ -90,6 +101,29 @@ class UserQueryReceiver(object):
         """
         raise NotImplementedError
         return None
+
+    def _setup_logging(self, log_level=logging.INFO):
+        """
+        This method configures logging.
+        :param log_level: The logging level to set for the logger, e.g., logging.DEBUG, logging.INFO, etc.
+        :return: None
+        """
+        # Create a logger with name 'user_query_receiver_logger'. This is NOT the root logger, which is one level up from here, and has no name.
+        logger = logging.getLogger('user_query_receiver_logger')
+        # This is the threshold level for the logger itself, before it will pass to any handlers, which can have their own threshold.
+        # Should be able to control here what the stream handler receives and thus what ends up going to stderr.
+        # Use this key for now:
+        #   DEBUG = debug messages sent to this logger will end up on stderr
+        #   INFO = info messages sent to this logger will end up on stderr
+        logger.setLevel(log_level)
+        # Set up this highest level below root logger with a stream handler
+        sh = logging.StreamHandler()
+        # Set the threshold for the stream handler itself, which will come into play only after the logger threshold is met.
+        sh.setLevel(log_level)
+        # Add the stream handler to the logger
+        logger.addHandler(sh)
+            
+        return None
     
     
 class ConsoleUserQueryReceiver(UserQueryReceiver):
@@ -104,11 +138,12 @@ class ConsoleUserQueryReceiver(UserQueryReceiver):
         IssueErrorMessage(...) -- Inform the user that their raw response does not meet requirements, by printing message to a console window.
     """
 
-    def __init__(self):
+    def __init__(self, log_level = logging.INFO):
         """
         Extends UserQueryReceiver.__init__().
+        :param log_level: The logging level to set for the logger, e.g., logging.DEBUG, logging.INFO, etc.
         """
-        UserQueryReceiver.__init__(self)
+        UserQueryReceiver.__init__(self, log_level)
     
     def GetRawResponse(self, prompt_text=''):
         """

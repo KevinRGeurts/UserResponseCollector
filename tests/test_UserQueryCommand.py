@@ -11,10 +11,10 @@ import tempfile
 from pathlib import Path
 
 # Local
-from UserQueryCommand import UserQueryCommand, UserQueryCommandMenu, UserQueryCommandNumberInteger, UserQueryCommandPathOpen, UserQueryCommandPathSave
-from UserQueryCommand import UserQueryCommandNumberFloat, UserQueryCommandStr
-from UserQueryCommand import askForMenuSelection, askForInt, askForFloat, askForStr, askForPathSave, askForPathOpen
-import UserQueryReceiver
+from UserResponseCollector.UserQueryCommand import UserQueryCommand, UserQueryCommandMenu, UserQueryCommandNumberInteger, UserQueryCommandPathOpen, UserQueryCommandPathSave
+from UserResponseCollector.UserQueryCommand import UserQueryCommandNumberFloat, UserQueryCommandStr
+from UserResponseCollector.UserQueryCommand import askForMenuSelection, askForInt, askForFloat, askForStr, askForPathSave, askForPathOpen
+import UserResponseCollector.UserQueryReceiver
 
 # TODO: Since UserQueryCommand.Execute() has been refactored as a Template Method, it would be an enhancement of
 # testing to create unit tests for the individual primitive operations of the UserQueryCommandX classes, rather than
@@ -23,7 +23,7 @@ import UserQueryReceiver
 class Test_UserQueryCommandPathSaveOpen(unittest.TestCase):
 
     def test_PathSave_command_doCreatePromptText(self):
-        receiver = UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
+        receiver = UserResponseCollector.UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
         query_preface = 'Which file do you wish to save?'
         command = UserQueryCommandPathSave(receiver, query_preface)
         exp_val = f"Which file do you wish to save?\nEnter a valid file system path, without file extension, and with escaped backslashes:  "
@@ -38,7 +38,7 @@ class Test_UserQueryCommandPathSaveOpen(unittest.TestCase):
         # Make sure the temporary file gets closed during teardown
         self.addCleanup(temp_file.close)
 
-        receiver = UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
+        receiver = UserResponseCollector.UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
         command = UserQueryCommandPathSave(receiver, '')
         
         exp_val = (Path(temp_path), '')
@@ -59,7 +59,7 @@ class Test_UserQueryCommandPathSaveOpen(unittest.TestCase):
         # Make sure the temporary file gets closed during teardown
         self.addCleanup(temp_file.close)
         
-        receiver = UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
+        receiver = UserResponseCollector.UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
         command = UserQueryCommandPathSave(receiver, '')
         
         # First ... the don't overwrite case
@@ -87,7 +87,7 @@ class Test_UserQueryCommandPathSaveOpen(unittest.TestCase):
         # Make sure the temporary file gets closed during teardown
         self.addCleanup(temp_file.close)
         
-        receiver = UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
+        receiver = UserResponseCollector.UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
         query_preface = 'Which file do you wish to save?'
         command = UserQueryCommandPathSave(receiver, query_preface)
         
@@ -111,7 +111,7 @@ class Test_UserQueryCommandPathSaveOpen(unittest.TestCase):
         # Make sure the temporary file gets closed during teardown
         self.addCleanup(temp_file.close)        
         
-        receiver = UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
+        receiver = UserResponseCollector.UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
         query_preface = 'Which file do you wish to save?'
         exp_val = temp_path
         test_path = askForPathSave(query_preface)
@@ -119,7 +119,7 @@ class Test_UserQueryCommandPathSaveOpen(unittest.TestCase):
         self.assertEqual(exp_val, act_val)
 
     def test_PathOpen_command_doCreatePromptText(self):
-        receiver = UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
+        receiver = UserResponseCollector.UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
         query_preface = 'Which file would you like to open?'
         command = UserQueryCommandPathOpen(receiver, query_preface)
         exp_val = f"Which file would you like to open?\nEnter a valid file system path, without file extension, and with escaped backslashes:  "
@@ -134,7 +134,7 @@ class Test_UserQueryCommandPathSaveOpen(unittest.TestCase):
         # Make sure the temporary file gets closed during teardown
         self.addCleanup(temp_file.close)
 
-        receiver = UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
+        receiver = UserResponseCollector.UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
         command = UserQueryCommandPathOpen(receiver, '')
         
         exp_val = (Path(temp_path), '')
@@ -142,7 +142,7 @@ class Test_UserQueryCommandPathSaveOpen(unittest.TestCase):
         self.assertEqual(exp_val, act_val)
 
     def test_PathOpen_command_doValidateProcessedResponse(self):
-        receiver = UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
+        receiver = UserResponseCollector.UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
         command = UserQueryCommandPathOpen(receiver, '')
         exp_val = (True, '')
         act_val = command._doValidateProcessedResponse()
@@ -163,7 +163,7 @@ class Test_UserQueryCommandPathSaveOpen(unittest.TestCase):
         # Make sure the temporary file gets closed during teardown
         self.addCleanup(temp_file.close)
         
-        receiver = UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
+        receiver = UserResponseCollector.UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
         query_preface = 'Which file would you like to open?'
         command = UserQueryCommandPathOpen(receiver, query_preface)
         
@@ -190,7 +190,7 @@ class Test_UserQueryCommandPathSaveOpen(unittest.TestCase):
         # Make sure the temporary file gets closed during teardown
         self.addCleanup(temp_file.close)
         
-        receiver = UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
+        receiver = UserResponseCollector.UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
         query_preface = 'Which file would you like to open?'
         command = UserQueryCommandPathOpen(receiver, query_preface)
         
@@ -214,7 +214,7 @@ class Test_UserQueryCommandPathSaveOpen(unittest.TestCase):
         # Make sure the temporary file gets closed during teardown
         self.addCleanup(temp_file.close)        
         
-        receiver = UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
+        receiver = UserResponseCollector.UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
         query_preface = 'Which file would you like to open?'
         exp_val = temp_path
         test_path = askForPathOpen(query_preface)
@@ -231,14 +231,14 @@ class Test_UserQueryCommand(unittest.TestCase):
 
     def test_primitive_operations_not_implemented(self):
         
-        receiver = UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
+        receiver = UserResponseCollector.UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
         command = UserQueryCommand(receiver,'')
         self.assertRaises(NotImplementedError, command._doCreatePromptText)
         self.assertRaises(NotImplementedError, command._doProcessRawResponse)
         self.assertRaises(NotImplementedError, command._doValidateProcessedResponse)
     
     def test_menu_command_doCreatePromptText(self):
-        receiver = UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
+        receiver = UserResponseCollector.UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
         query_preface = 'Do you want option 1 or option 2?'
         query_dic = {'1':'Option 1', '2':'Option 2'}
         command = UserQueryCommandMenu(receiver, query_preface, query_dic)
@@ -247,14 +247,14 @@ class Test_UserQueryCommand(unittest.TestCase):
         self.assertEqual(exp_val, act_val)
 
     def test_menu_command_doProcessRawResponse(self):
-        receiver = UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
+        receiver = UserResponseCollector.UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
         command = UserQueryCommandMenu(receiver)
         exp_val = ('1','')
         act_val = command._doProcessRawResponse('1')
         self.assertTupleEqual(exp_val, act_val)
 
     def test_menu_command_doValidateProcessedResponse(self):
-        receiver = UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
+        receiver = UserResponseCollector.UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
         query_preface = 'Do you want option 1 or option 2?'
         query_dic = {'1':'Option 1', '2':'Option 2'}
         command = UserQueryCommandMenu(receiver, query_preface, query_dic)
@@ -263,7 +263,7 @@ class Test_UserQueryCommand(unittest.TestCase):
         self.assertTupleEqual(exp_val, act_val)
 
     def test_menu_command_doValidateProcessedResponse_bad(self):
-        receiver = UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
+        receiver = UserResponseCollector.UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
         query_preface = 'Do you want option 1 or option 2?'
         query_dic = {'1':'Option 1', '2':'Option 2'}
         command = UserQueryCommandMenu(receiver, query_preface, query_dic)
@@ -277,7 +277,7 @@ class Test_UserQueryCommand(unittest.TestCase):
     @patch('sys.stdin', io.StringIO('0\n1\n'))
     def test_menu_command(self):
         
-        receiver = UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
+        receiver = UserResponseCollector.UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
         query_preface = 'Do you want option 1 or option 2?'
         query_dic = {'1':'Option 1', '2':'Option 2'}
         command = UserQueryCommandMenu(receiver, query_preface, query_dic)
@@ -297,7 +297,7 @@ class Test_UserQueryCommand(unittest.TestCase):
         self.assertEqual(exp_val, act_val)
     
     def test_NumberInteger_command_doCreatePromptText(self):
-        receiver = UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
+        receiver = UserResponseCollector.UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
         query_preface = 'How many widgets do you want?'
         command = UserQueryCommandNumberInteger(receiver, query_preface, 1, 20)
         exp_val = f"How many widgets do you want?\nEnter an integer number between {1} and {20}:  "
@@ -305,28 +305,28 @@ class Test_UserQueryCommand(unittest.TestCase):
         self.assertEqual(exp_val, act_val)
 
     def test_NumberInteger_command_doProcessRawResponse(self):
-        receiver = UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
+        receiver = UserResponseCollector.UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
         command = UserQueryCommandNumberInteger(receiver, '')
         exp_val = (10, '')
         act_val = command._doProcessRawResponse('10')
         self.assertTupleEqual(exp_val, act_val)
 
     def test_NumberInteger_command_doProcessRawResponse_bad(self):
-        receiver = UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
+        receiver = UserResponseCollector.UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
         command = UserQueryCommandNumberInteger(receiver, '')
         exp_val = (None, f"\n\'{'ten'}\' is not an integer. Please try again.")
         act_val = command._doProcessRawResponse('ten')
         self.assertTupleEqual(exp_val, act_val)
 
     def test_NumberInteger_command_doValidateProcessedResponse(self):
-        receiver = UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
+        receiver = UserResponseCollector.UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
         command = UserQueryCommandNumberInteger(receiver, '', 1, 20)
         exp_val = (True, '')
         act_val = command._doValidateProcessedResponse(10)
         self.assertTupleEqual(exp_val, act_val)
 
     def test_NumberInteger_command_doValidateProcessedResponse_OutOfRange(self):
-        receiver = UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
+        receiver = UserResponseCollector.UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
         command = UserQueryCommandNumberInteger(receiver, '', 2, 20)
         # Exceed maximum value
         exp_val = (False, f"\n\'{21}\' is greater than {20}. Please try again.")
@@ -338,7 +338,7 @@ class Test_UserQueryCommand(unittest.TestCase):
         self.assertTupleEqual(exp_val, act_val)
 
     def test_NumberInteger_command_doValidateProcessedResponse_NoMinMax(self):
-        receiver = UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
+        receiver = UserResponseCollector.UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
         command = UserQueryCommandNumberInteger(receiver, '')
         exp_val = (True, '')
         act_val = command._doValidateProcessedResponse(21)
@@ -349,7 +349,7 @@ class Test_UserQueryCommand(unittest.TestCase):
     @patch('sys.stdin', io.StringIO('a\n10\n'))
     def test_NumberInteger_command(self):
  
-        receiver = UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
+        receiver = UserResponseCollector.UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
         query_preface = 'How many widgets do you want?'
         command = UserQueryCommandNumberInteger(receiver, query_preface)
         
@@ -372,7 +372,7 @@ class Test_UserQueryCommand(unittest.TestCase):
     @patch('sys.stdin', io.StringIO('a\n0\n21\n10\n'))
     def test_NumberInteger_invalid_OutOfRange_command(self):
  
-        receiver = UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
+        receiver = UserResponseCollector.UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
         query_preface = 'How many widgets do you want?'
         command = UserQueryCommandNumberInteger(receiver, query_preface, minimum=1, maximum=20)
         
@@ -385,7 +385,7 @@ class Test_UserQueryCommand(unittest.TestCase):
     @patch('sys.stdin', io.StringIO('a\n0\n10\n'))
     def test_NumberInteger_invalid_OutOfRange_noMax_command(self):
  
-        receiver = UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
+        receiver = UserResponseCollector.UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
         query_preface = 'How many widgets do you want?'
         command = UserQueryCommandNumberInteger(receiver, query_preface, minimum=1)
         
@@ -398,7 +398,7 @@ class Test_UserQueryCommand(unittest.TestCase):
     @patch('sys.stdin', io.StringIO('a\n21\n10\n'))
     def test_NumberInteger_invalid_OutOfRange_noMin_command(self):
  
-        receiver = UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
+        receiver = UserResponseCollector.UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
         query_preface = 'How many widgets do you want?'
         command = UserQueryCommandNumberInteger(receiver, query_preface, maximum=10)
         
@@ -407,7 +407,7 @@ class Test_UserQueryCommand(unittest.TestCase):
         self.assertEqual(exp_val, act_val)
 
     def test_NumberFloat_command_doCreatePromptText(self):
-        receiver = UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
+        receiver = UserResponseCollector.UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
         query_preface = 'What is the distance in miles?'
         command = UserQueryCommandNumberFloat(receiver, query_preface, minimum=1.25, maximum=20.75)
         exp_val = f"What is the distance in miles?\nEnter a floating point number between {1.25} and {20.75}:  "
@@ -415,28 +415,28 @@ class Test_UserQueryCommand(unittest.TestCase):
         self.assertEqual(exp_val, act_val)
 
     def test_NumberFloat_command_doProcessRawResponse(self):
-        receiver = UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
+        receiver = UserResponseCollector.UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
         command = UserQueryCommandNumberFloat(receiver, '')
         exp_val = (10.5, '')
         act_val = command._doProcessRawResponse('10.5')
         self.assertTupleEqual(exp_val, act_val)
 
     def test_NumberFloat_command_doProcessRawResponse_bad(self):
-        receiver = UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
+        receiver = UserResponseCollector.UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
         command = UserQueryCommandNumberFloat(receiver, '')
         exp_val = (None, f"\n\'{'ten'}\' is not a floating point number. Please try again.")
         act_val = command._doProcessRawResponse('ten')
         self.assertTupleEqual(exp_val, act_val)
 
     def test_NumberFloat_command_doValidateProcessedResponse(self):
-        receiver = UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
+        receiver = UserResponseCollector.UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
         command = UserQueryCommandNumberFloat(receiver, '', minimum=1.25, maximum=20.75)
         exp_val = (True, '')
         act_val = command._doValidateProcessedResponse(10.5)
         self.assertTupleEqual(exp_val, act_val)
 
     def test_NumberFloat_command_doValidateProcessedResponse_OutOfRange(self):
-        receiver = UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
+        receiver = UserResponseCollector.UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
         command = UserQueryCommandNumberFloat(receiver, '', minimum=1.25, maximum=20.75)
         # Exceed maximum value
         exp_val = (False, f"\n\'{20.9}\' is greater than {20.75}. Please try again.")
@@ -448,7 +448,7 @@ class Test_UserQueryCommand(unittest.TestCase):
         self.assertTupleEqual(exp_val, act_val)
 
     def test_NumberFloat_command_doValidateProcessedResponse_NoMinMax(self):
-        receiver = UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
+        receiver = UserResponseCollector.UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
         command = UserQueryCommandNumberFloat(receiver, '')
         exp_val = (True, '')
         act_val = command._doValidateProcessedResponse(10.5)
@@ -459,7 +459,7 @@ class Test_UserQueryCommand(unittest.TestCase):
     @patch('sys.stdin', io.StringIO('a\n10.5\n'))
     def test_NumberFloat_command(self):
  
-        receiver = UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
+        receiver = UserResponseCollector.UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
         query_preface = 'What is the distance in miles?'
         command = UserQueryCommandNumberFloat(receiver, query_preface)
         
@@ -482,7 +482,7 @@ class Test_UserQueryCommand(unittest.TestCase):
     @patch('sys.stdin', io.StringIO('a\n1.1\n20.84\n10.5\n'))
     def test_NumberFloat_invalid_OutOfRange_command(self):
  
-        receiver = UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
+        receiver = UserResponseCollector.UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
         query_preface = 'What is the distance in miles?'
         command = UserQueryCommandNumberFloat(receiver, query_preface, minimum=1.25, maximum=20.75)
         
@@ -495,7 +495,7 @@ class Test_UserQueryCommand(unittest.TestCase):
     @patch('sys.stdin', io.StringIO('a\n1.1\n10.5\n'))
     def test_NumberFloat_invalid_OutOfRange_noMax_command(self):
  
-        receiver = UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
+        receiver = UserResponseCollector.UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
         query_preface = 'What is the distance in miles?'
         command = UserQueryCommandNumberFloat(receiver, query_preface, minimum=1.25)
         
@@ -508,7 +508,7 @@ class Test_UserQueryCommand(unittest.TestCase):
     @patch('sys.stdin', io.StringIO('a\n20.85\n10.5\n'))
     def test_NumberFloat_invalid_OutOfRange_noMin_command(self):
  
-        receiver = UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
+        receiver = UserResponseCollector.UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
         query_preface = 'What is the distance in miles?'
         command = UserQueryCommandNumberFloat(receiver, query_preface, maximum=20.75)
         
@@ -517,7 +517,7 @@ class Test_UserQueryCommand(unittest.TestCase):
         self.assertEqual(exp_val, act_val)
 
     def test_Str_command_doCreatePromptText(self):
-        receiver = UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
+        receiver = UserResponseCollector.UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
         query_preface = 'What is your name?'
         command = UserQueryCommandStr(receiver, query_preface, max_length=15)
         exp_val = f"What is your name?\nEnter a string of text no longer than {15} characters:  "
@@ -525,28 +525,28 @@ class Test_UserQueryCommand(unittest.TestCase):
         self.assertEqual(exp_val, act_val)
 
     def test_Str_command_doProcessRawResponse(self):
-        receiver = UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
+        receiver = UserResponseCollector.UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
         command = UserQueryCommandStr(receiver, '')
         exp_val = ('George Washington', '')
         act_val = command._doProcessRawResponse('George Washington')
         self.assertTupleEqual(exp_val, act_val)
 
     def test_Str_command_doValidateProcessedResponse(self):
-        receiver = UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
+        receiver = UserResponseCollector.UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
         command = UserQueryCommandStr(receiver, '', max_length=15)
         exp_val = (True, '')
         act_val = command._doValidateProcessedResponse('G. Washington')
         self.assertTupleEqual(exp_val, act_val)
 
     def test_Str_command_doValidateProcessedResponse_OutOfRange(self):
-        receiver = UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
+        receiver = UserResponseCollector.UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
         command = UserQueryCommandStr(receiver, '', max_length=15)
         exp_val = (False, f"\n\'{'George Washington'}\' is longer than {15} characters. Please try again.")
         act_val = command._doValidateProcessedResponse('George Washington')
         self.assertTupleEqual(exp_val, act_val)
 
     def test_Str_command_doValidateProcessedResponse_NoMinMax(self):
-        receiver = UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
+        receiver = UserResponseCollector.UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
         command = UserQueryCommandStr(receiver, '', max_length=None)
         exp_val = (True, '')
         act_val = command._doValidateProcessedResponse('George Washington')
@@ -557,7 +557,7 @@ class Test_UserQueryCommand(unittest.TestCase):
     @patch('sys.stdin', io.StringIO('George Washington\nG. Washington\n'))
     def test_Str_command(self):
  
-        receiver = UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
+        receiver = UserResponseCollector.UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
         query_preface = 'What is your name?'
         command = UserQueryCommandStr(receiver, query_preface, max_length=15)
         

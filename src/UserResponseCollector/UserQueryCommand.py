@@ -23,11 +23,16 @@ Exported Functions:
 """
 
 # Standard
+import sys
 from multiprocessing import process
 from pathlib import Path
 
 # Local
-import UserQueryReceiver
+import UserResponseCollector.UserQueryReceiver
+
+# TODO: Remove or comment out debug print for release. This was added to help understand
+# and debug package import behavior.
+# print("In module UserQueryCommands sys.path[0], __package__ ==", sys.path[0], __package__)
 
 class UserQueryCommand(object):
     """
@@ -42,7 +47,7 @@ class UserQueryCommand(object):
         :parameter receiver: The object that knows how to perform the operations associated with carrying out a command, must be a UserQueryReceiver instance.
         :parameter query_preface: Text displayed to the user to request their response, string
         """
-        assert(isinstance(receiver, UserQueryReceiver.UserQueryReceiver))
+        assert(isinstance(receiver, UserResponseCollector.UserQueryReceiver.UserQueryReceiver))
         self._receiver = receiver
         self._query_preface = query_preface
     
@@ -202,7 +207,7 @@ def askForMenuSelection(query_preface = '', query_dic = {}):
     :return: key from query_dic   
     """
     # Build a query for the user to obtain their choice from a menu
-    receiver = UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
+    receiver = UserResponseCollector.UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
     command = UserQueryCommandMenu(receiver, query_preface, query_dic)    
     response = command.Execute()
     return response
@@ -298,7 +303,7 @@ def askForInt(query_preface = '', minimum=None, maximum=None):
     :return: The integer number entered by the user, int    
     """
     # Build a query for the user to obtain an integer value
-    receiver = UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
+    receiver = UserResponseCollector.UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
     command = UserQueryCommandNumberInteger(receiver, query_preface, minimum, maximum)    
     response = command.Execute()
     return response
@@ -395,7 +400,7 @@ def askForFloat(query_preface = '', minimum=None, maximum=None):
     :return: The floating point number entered by the user, float    
     """
     # Build a query for the user to obtain a floating point value
-    receiver = UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
+    receiver = UserResponseCollector.UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
     command = UserQueryCommandNumberFloat(receiver, query_preface, minimum, maximum)    
     response = command.Execute()
     return response
@@ -483,7 +488,7 @@ def askForStr(query_preface = '', max_length=25):
     :return: The text string entered by the user, str    
     """
     # Build a query for the user to obtain a text string
-    receiver = UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
+    receiver = UserResponseCollector.UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
     command = UserQueryCommandStr(receiver, query_preface, max_length=max_length)    
     response = command.Execute()
     return response
@@ -575,7 +580,7 @@ def askForPathSave(query_preface = ''):
     :return: Valid file path, as Path object   
     """
     # Build a query for the user to obtain a file save path
-    receiver = UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
+    receiver = UserResponseCollector.UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
     command = UserQueryCommandPathSave(receiver, query_preface)    
     response = command.Execute()
     return response    
@@ -650,7 +655,7 @@ def askForPathOpen(query_preface = ''):
     :return: Valid file path, as Path object   
     """
     # Build a query for the user to obtain a file open path
-    receiver = UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
+    receiver = UserResponseCollector.UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
     command = UserQueryCommandPathOpen(receiver, query_preface)    
     response = command.Execute()
     return response   
