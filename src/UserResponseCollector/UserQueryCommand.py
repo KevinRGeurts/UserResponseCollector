@@ -274,12 +274,12 @@ class UserQueryCommandNumberInteger(UserQueryCommand):
             Note: If In range? = True, then Error message should be ''
         """
         # Check if the entered integer is within range, if the user has provided min and max values
-        if self._min_val:
+        if self._min_val is not None:
             if processed_response < self._min_val:
                 # Craft error message
                 msg = f"\n\'{processed_response}\' is less than {self._min_val}. Please try again."
                 return (False, msg)
-        if self._max_val:
+        if self._max_val is not None:
             if processed_response > self._max_val:
                 # Craft error message
                 msg = f"\n\'{processed_response}\' is greater than {self._max_val}. Please try again."
@@ -370,12 +370,12 @@ class UserQueryCommandNumberFloat(UserQueryCommand):
             Note: If In range? = True, then Error message should be ''
         """
         # Check if the entered float is within range, if the user has provided min and max values
-        if self._min_val:
+        if self._min_val is not None:
             if processed_response < self._min_val:
                 # Craft error message
                 msg = f"\n\'{processed_response}\' is less than {self._min_val}. Please try again."
                 return (False, msg)
-        if self._max_val:
+        if self._max_val is not None:
             if processed_response > self._max_val:
                 # Craft error message
                 msg = f"\n\'{processed_response}\' is greater than {self._max_val}. Please try again."

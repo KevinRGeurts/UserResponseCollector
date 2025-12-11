@@ -84,7 +84,7 @@ def do_NumberFloatQuery():
     receiver = UserResponseCollector.UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
     print(f"Receiver ID: {id(receiver)}")
     query_preface = 'Which floating point number do you want?'
-    command = UserQueryCommandNumberFloat(receiver, query_preface, maximum = 20.75)    
+    command = UserQueryCommandNumberFloat(receiver, query_preface, minimum=0.0, maximum = 20.75)    
 
     response = command.Execute()
 
