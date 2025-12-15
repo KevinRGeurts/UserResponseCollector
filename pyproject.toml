@@ -4,11 +4,11 @@ build-backend = "pdm.backend"
 
 [tool.pdm.build]
 includes = ["src/UserResponseCollector/*.py"]
-source-includes = ["tests/", "src/UserResponseCollector/Documentation/Developer_Documentation.txt", "src/UserResponseCollector/UserQueryReceiver.sln", "src/UserResponseCollector/UserQueryReceiver.pyproj"]
+source-includes = ["tests/", "src/UserResponseCollector/Documentation/Developer_Documentation.txt", "src/UserResponseCollector/Documentation/uml_class_diagram.pptx", "src/UserResponseCollector/UserQueryReceiver.sln", "src/UserResponseCollector/UserQueryReceiver.pyproj"]
 
 [project]
 name = "UserResponseCollector"
-version = "1.0.5"
+version = "1.0.6"
 authors = [
   { name="Kevin R. Geurts", email="kevin.r.geurts@gmail.com" },
 ]
