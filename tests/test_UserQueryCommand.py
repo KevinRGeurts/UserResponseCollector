@@ -296,6 +296,11 @@ class Test_UserQueryCommand(unittest.TestCase):
         act_val = askForMenuSelection(query_preface, query_dic)
         self.assertEqual(exp_val, act_val)
     
+    def test_NumberIntegerCommand_no_valid_responses(self):
+        receiver = UserResponseCollector.UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
+        query_preface = 'How many widgets do you want?'
+        self.assertRaises(AssertionError, UserQueryCommandNumberInteger, receiver, query_preface, 1, 2)
+        
     def test_NumberInteger_command_doCreatePromptText(self):
         receiver = UserResponseCollector.UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
         query_preface = 'How many widgets do you want?'
@@ -334,6 +339,19 @@ class Test_UserQueryCommand(unittest.TestCase):
         self.assertTupleEqual(exp_val, act_val)
         # Less than minimum value
         exp_val = (False, f"\n\'{1}\' is less than {2}. Please try again.")
+        act_val = command._doValidateProcessedResponse(1)
+        self.assertTupleEqual(exp_val, act_val)
+
+    def test_NumberInteger_command_doValidateProcessedResponse_min0_max0(self):
+        receiver = UserResponseCollector.UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
+        # Less than minimum value
+        command = UserQueryCommandNumberInteger(receiver, '', 0, 20)
+        exp_val = (False, f"\n\'{-1}\' is less than {0}. Please try again.")
+        act_val = command._doValidateProcessedResponse(-1)
+        self.assertTupleEqual(exp_val, act_val)
+        # Greater than maximum value
+        command = UserQueryCommandNumberInteger(receiver, '', -20, 0)
+        exp_val = (False, f"\n\'{1}\' is greater than {0}. Please try again.")
         act_val = command._doValidateProcessedResponse(1)
         self.assertTupleEqual(exp_val, act_val)
 
@@ -406,6 +424,11 @@ class Test_UserQueryCommand(unittest.TestCase):
         act_val = command.Execute()
         self.assertEqual(exp_val, act_val)
 
+    def test_NumberFloatCommand_no_valid_responses(self):
+        receiver = UserResponseCollector.UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
+        query_preface = 'What is the distance in miles?'
+        self.assertRaises(AssertionError, UserQueryCommandNumberFloat, receiver, query_preface, 10.9, 10.9)
+
     def test_NumberFloat_command_doCreatePromptText(self):
         receiver = UserResponseCollector.UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
         query_preface = 'What is the distance in miles?'
@@ -445,6 +468,19 @@ class Test_UserQueryCommand(unittest.TestCase):
         # Less than minimum value
         exp_val = (False, f"\n\'{1.15}\' is less than {1.25}. Please try again.")
         act_val = command._doValidateProcessedResponse(1.15)
+        self.assertTupleEqual(exp_val, act_val)
+
+    def test_NumberFloat_command_doValidateProcessedResponse_min0_max0(self):
+        receiver = UserResponseCollector.UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
+        # Exceed maximum value
+        command = UserQueryCommandNumberFloat(receiver, '', minimum=-1.25, maximum=0.00)
+        exp_val = (False, f"\n\'{1.25}\' is greater than {0.00}. Please try again.")
+        act_val = command._doValidateProcessedResponse(1.25)
+        self.assertTupleEqual(exp_val, act_val)
+        # Less than minimum value
+        command = UserQueryCommandNumberFloat(receiver, '', minimum=0.00, maximum=20.9)
+        exp_val = (False, f"\n\'{-1.15}\' is less than {0.00}. Please try again.")
+        act_val = command._doValidateProcessedResponse(-1.15)
         self.assertTupleEqual(exp_val, act_val)
 
     def test_NumberFloat_command_doValidateProcessedResponse_NoMinMax(self):

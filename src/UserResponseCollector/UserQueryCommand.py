@@ -231,8 +231,12 @@ class UserQueryCommandNumberInteger(UserQueryCommand):
             If None, then there is no maximum value.
         """
         UserQueryCommand.__init__(self, receiver, query_preface)
+        if minimum is not None and maximum is not None:
+            # Make sure there is actually a possible valid response
+            assert(maximum > minimum+1)
         self._min_val = minimum
         self._max_val = maximum
+
         
     def _doCreatePromptText(self):
         """
@@ -327,6 +331,9 @@ class UserQueryCommandNumberFloat(UserQueryCommand):
             If None, then there is no maximum value.
         """
         UserQueryCommand.__init__(self, receiver, query_preface)
+        if minimum is not None and maximum is not None:
+            # Make sure a valid response is possible
+            assert(maximum > minimum)
         self._min_val = minimum
         self._max_val = maximum
 
