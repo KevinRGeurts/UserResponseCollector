@@ -236,7 +236,24 @@ class Test_UserQueryCommand(unittest.TestCase):
         self.assertRaises(NotImplementedError, command._doCreatePromptText)
         self.assertRaises(NotImplementedError, command._doProcessRawResponse)
         self.assertRaises(NotImplementedError, command._doValidateProcessedResponse)
+
+    def test_base_doGetExtraDict(self):
+        receiver = UserResponseCollector.UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
+        command = UserQueryCommand(receiver)
+        exp_val = UserQueryCommand
+        extra = command._doGetExtraDict()
+        act_val = extra['query_type']
+        self.assertEqual(exp_val, act_val)
     
+    def test_menu_command_doGetExtraDict(self):
+        receiver = UserResponseCollector.UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
+        query_preface = 'Do you want option 1 or option 2?'
+        query_dic = {'1':'Option 1', '2':'Option 2'}
+        command = UserQueryCommandMenu(receiver, query_preface, query_dic)
+        exp_val = {'query_type':UserQueryCommandMenu, 'query_dic':{'1':'Option 1', '2':'Option 2'}}
+        act_val = command._doGetExtraDict()
+        self.assertEqual(exp_val, act_val)
+        
     def test_menu_command_doCreatePromptText(self):
         receiver = UserResponseCollector.UserQueryReceiver.UserQueryReceiver_GetCommandReceiver()
         query_preface = 'Do you want option 1 or option 2?'

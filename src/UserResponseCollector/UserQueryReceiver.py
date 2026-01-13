@@ -81,12 +81,14 @@ class UserQueryReceiver(object):
         """
         return self
     
-    def GetRawResponse(self, prompt_text=''):
+    def GetRawResponse(self, prompt_text='', extra={}):
         """
         This is an abstract method that MUST be implemented by children. If called, it will raise NotImplementedError
         Called to obtain a raw response from the user, which will always be a sting of text.
-            :parameter prompt_text: String of text (default='') to use to tell the user what response is requrired, string
-            :return: Raw response, string        
+        :parameter prompt_text: String of text (default='') to use to tell the user what response is requrired, string
+        :parameter extra: Optional dictionary of key/value pairs (default={}) that may be used to pass additional information to the method.
+            NOTE: Clients must assume that the UserQueryReceiver implementation may ignore this parameter.
+        :return: Raw response, string        
         """
         raw_response = ''
         raise NotImplementedError
@@ -145,13 +147,15 @@ class ConsoleUserQueryReceiver(UserQueryReceiver):
         """
         UserQueryReceiver.__init__(self, log_level)
     
-    def GetRawResponse(self, prompt_text=''):
+    def GetRawResponse(self, prompt_text='', extra={}):
         """
         Obtains response to query from the user through console window.
 
         Overrides UserQueryReceiver.GetRawResponse(...). Called to obtain a raw response from the user through their interaction with a console window, which will always be a sting of text.
-            :parameter prompt_text: String of text (default='') to use to tell the user what response is requrired, string
-            :return: Raw response, string        
+        :parameter prompt_text: String of text (default='') to use to tell the user what response is requrired, string
+        :parameter extra: Optional dictionary of key/value pairs (default={}) that may be used to pass additional information to the method.
+            NOTE: This implementation ignores this parameter.
+        :return: Raw response, string        
         """
         # Ask the user to type a text response into the console window, which will be in the form of a string
         raw_response = input(prompt_text)

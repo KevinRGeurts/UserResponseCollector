@@ -21,6 +21,11 @@ type of input is needed. UserQueryCommand child classes (e.g. UserQueryCommandNu
 - ```_doValidateProcessedResponse(...)``` - Tests that the object of required type meets any other requirements, such
 											as that an entered integer is greater than or equal to a minimum value
 
+- UserQueryCommand child classes can also optionaly extend:
+- ```_doGetExtraDict()``` - Returns dictionary of key/value pairs to pass to UserQueryReceiver.GetRawResponse(...) method.
+                            The base implemetation adds the "query_type" key, with the value of the type of this UserQueryCommand.
+                            Note: Clients must assume that the Receiver implementation may not use any or all of the key/value pairs provided.
+
 If a new source of input is needed, a new Receiver subclass can be created that implements the Receiver interface.
 
 ## Credit where credit is due
