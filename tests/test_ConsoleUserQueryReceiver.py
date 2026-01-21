@@ -9,7 +9,7 @@ from unittest.mock import patch
 import io
 
 # Local
-from UserQueryReceiver import _instance, UserQueryReceiver_GetCommandReceiver
+from UserResponseCollector.UserQueryReceiver import _instance, UserQueryReceiver_GetCommandReceiver
 
 
 class Test_ConsoleUserQueryReceiver(unittest.TestCase):
@@ -27,6 +27,14 @@ class Test_ConsoleUserQueryReceiver(unittest.TestCase):
         exp_val = 'Typed text response'
         receiver = UserQueryReceiver_GetCommandReceiver() 
         act_val = receiver.GetRawResponse('Please type a text response and hit enter.')
+        self.assertEqual(exp_val, act_val)
+
+    # Apply a patch() decorator to replace keyboard input from user with a string.
+    @patch('sys.stdin', io.StringIO('Typed text response'))
+    def test_GetRawResponse_with_extra(self):
+        exp_val = 'Typed text response'
+        receiver = UserQueryReceiver_GetCommandReceiver() 
+        act_val = receiver.GetRawResponse('Please type a text response and hit enter.', {'key':'value'})
         self.assertEqual(exp_val, act_val)
         
     # Apply a patch() decorator to replace keyboard input from user with a string.

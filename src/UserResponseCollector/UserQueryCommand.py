@@ -9,6 +9,15 @@ implementations are provided.
 Exported Classes:
     UserQueryCommand -- Interface (abstract base) class for Command.
     UserQueryCommandX -- Concrete UserQueryCommand that invokes methods on UserQueryReceiver to obtain user input of type X.
+
+    Each UserQueryCommandX must by convention and necessity implement these methods:
+        (1) _doCreatePromptText() - Returns string of text used to prompt user for input
+        (2) _doProcessRawResponse(...) - Converts the raw response text string of user input to an object of required type
+        (3) doValidateProcessedResponse(...) - Tests that the object of required type meets any other requirements, such
+										   as that an entered integer is greater than or equal to a minimum value
+    Each UserQueryCommandX may optionally extend:
+        (4) _doGetExtraDict() - Returns dictionary of key/value pairs to pass to UserQueryReceiver.GetRawResponse(...) method.
+            Note: Clients must assume that the UserQueryReceiver implementation may ignore this parameter.
     
 Exported Exceptions:
     None    
@@ -40,7 +49,13 @@ class UserQueryCommand(object):
     various user querys by invoking methods on UserQueryReceiver.
 
     Each child must by convention and necessity implement these methods:
-        Execute(...) - Called to obtain a response from the user, of a type which can differ for each child.
+        (1) _doCreatePromptText() - Returns string of text used to prompt user for input
+        (2) _doProcessRawResponse(...) - Converts the raw response text string of user input to an object of required type
+        (3) doValidateProcessedResponse(...) - Tests that the object of required type meets any other requirements, such
+										   as that an entered integer is greater than or equal to a minimum value
+    Each child may optionally extend:
+        (4) _doGetExtraDict() - Returns dictionary of key/value pairs to pass to UserQueryReceiver.GetRawResponse(...) method.
+            Note: Clients must assume that the UserQueryReceiver implementation may ignore this parameter.
     """
     def __init__(self, receiver=None, query_preface = ''):
         """
@@ -64,10 +79,12 @@ class UserQueryCommand(object):
         
         prompt_text = self._doCreatePromptText()
 
+        extra = self._doGetExtraDict()
+
         while processed_response is None:
                 
             # Ask the receiver/user for a raw response, which will be in the form of a string
-            raw_response = self._receiver.GetRawResponse(prompt_text)
+            raw_response = self._receiver.GetRawResponse(prompt_text, extra)
         
             # Process the response from the receiver/user into an object of required type
             (processed_response, error_msg) = self._doProcessRawResponse(raw_response)
@@ -86,6 +103,18 @@ class UserQueryCommand(object):
                 
         return processed_response
 
+    def _doGetExtraDict(self):
+        """
+        Following the Template Method design pattern, this is a primitive operation to
+        assemble a dictionary of extra optional key/value pairs to pass to the receiver's GetRawResponse(...) method.
+        This base implemetation adds the "query_type" key with the value of the type of this UserQueryCommand.
+        It is intended that concrete child classes will extend this method to add any additional keyword arguments.
+        :return: The dictionary of extra key/value pairs, as dict
+        """
+        extra = {}
+        extra['query_type']=type(self)
+        return extra
+    
     def _doCreatePromptText(self):
         """
         Following the Template Method design pattern, _doCreatePromptText() is an abstract primitive operation to
@@ -138,6 +167,17 @@ class UserQueryCommandMenu(UserQueryCommand):
         """
         UserQueryCommand.__init__(self, receiver, query_preface)
         self._query_dic = query_dic
+
+    def _doGetExtraDict(self):
+        """
+        Following the Template Method design pattern, this is a primitive operation to
+        assemble a dictionary of extra optional key/value pairs to pass to the receiver's GetRawResponse(...) method.
+        This extends the base implemetation by adding the 'query_dic' key with value of the self._query_dic.
+        :return: The dictionary of extra key/value pairs, as dict
+        """
+        extra = super()._doGetExtraDict()
+        extra['query_dic']=self._query_dic
+        return extra
     
     def _doCreatePromptText(self):
         """
